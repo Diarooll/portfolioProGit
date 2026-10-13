@@ -1,0 +1,109 @@
+/* ==========================================================
+   TOKENS: todas as "decisões de design" num lugar só.
+   Layout: mapa de trilha. Hero com curvas de nível, o resto
+   calmo, alinhado à esquerda, separado por linhas finas.
+
+   TEMAS: o escuro (floresta noturna) é o padrão.
+   - Se o sistema do visitante estiver em modo claro, usamos o claro.
+   - Se ele clicar no botão, o JS coloca data-theme="light" ou
+     data-theme="dark" no <html>, e isso vence o sistema.
+   ========================================================== */
+:root {
+  /* ----- Cores: tema escuro (padrão) ----- */
+  --bg: #141A16;          /* floresta noturna */
+  --bg-soft: #18201A;     /* faixa levemente mais clara (seção contato) */
+  --surface: #1E2620;     /* musgo: fundo dos cards */
+  --line: #2E3830;        /* linhas e bordas */
+  --fg: #E8ECE4;          /* névoa: texto principal */
+  --muted: #9AA697;       /* líquen: texto secundário */
+  --accent: #B5C77A;      /* broto: cor de destaque */
+  --accent-ink: #141A16;  /* texto em cima do acento */
+  --warm: #D2A86A;        /* folha seca: detalhes quentes */
+  --topo-line: rgba(181, 199, 122, 0.16); /* curvas de nível do hero */
+  --topo-line-strong: rgba(210, 168, 106, 0.30);
+  --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.7);
+  --icon-sun: block;      /* qual ícone o botão de tema mostra */
+  --icon-moon: none;
+  color-scheme: dark;
+
+  /* ----- Tipografia ----- */
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Work Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Escala de tipos (cada passo ~1.25x) */
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1.05rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.6rem, 3.2vw, 2.1rem);
+  --text-2xl: clamp(2rem, 4.5vw, 3rem);
+  --text-hero: clamp(3rem, 10vw, 7.2rem);
+
+  /* ----- Espaçamentos ----- */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 7rem;
+
+  /* ----- Formas e movimento ----- */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-pill: 999px;
+  --container: 1120px;
+  --navbar-height: 68px;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);    /* desacelera no fim: natural */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* passa um pouco e volta */
+  --dur-fast: 0.2s;
+  --dur: 0.45s;
+  --dur-slow: 0.9s;
+}
+
+/* ----- Tema claro: sistema do visitante em modo claro -----
+   Contraste WCAG (mínimo 4.5:1 para texto pequeno), medido sobre
+   --bg (#EEF1EA) / --bg-soft (#E5EADF) / --surface (#FFFFFF):
+   - --muted  #566054: 5.76 / 5.37 / 6.57
+   - --accent #506A28: 5.36 / 5.00 / 6.12
+   - --warm   #85592A: 5.32 / 4.96 / 6.07  (o antigo #9A6B2F dava 4.07 e reprovava)
+   - --accent-ink sobre --accent: 5.72
+   No escuro, o menor par é --muted sobre --surface: 6.11. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #EEF1EA;
+    --bg-soft: #E5EADF;
+    --surface: #FFFFFF;
+    --line: #D5DBD0;
+    --fg: #1A211C;
+    --muted: #566054;
+    --accent: #506A28;
+    --accent-ink: #F6F8F2;
+    --warm: #85592A;
+    --topo-line: rgba(80, 106, 40, 0.16);
+    --topo-line-strong: rgba(133, 89, 42, 0.30);
+    --shadow: 0 18px 40px -24px rgba(40, 52, 30, 0.35);
+    --icon-sun: none;
+    --icon-moon: block;
+    color-scheme: light;
+  }
+}
+
+/* ----- Tema claro escolhido no botão ----- */
+:root[data-theme="light"] {
+  --bg: #EEF1EA;
+  --bg-soft: #E5EADF;
+  --surface: #FFFFFF;
+  --line: #D5DBD0;
+  --fg: #1A211C;
+  --muted: #566054;
+  --accent: #506A28;
+  --accent-ink: #F6F8F2;
+  --warm: #85592A;
+  --topo-line: rgba(80, 106, 40, 0.16);
+  --topo-line-strong: rgba(133, 89, 42, 0.30);
+  --shadow: 0 18px 40px -24px rgba(40, 52, 30, 0.35);
+  --icon-sun: none;
+  --icon-moon: block;
+  color-scheme: light;
+}
