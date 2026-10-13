@@ -428,7 +428,7 @@
 }
 
 /* O ímã: o main.js atualiza --tx/--ty a cada movimento do mouse e a
-   transição (no .btn / .contact__btn) suaviza o "puxão". */
+   transição (no .btn) suaviza o "puxão". */
 .magnetic {
   translate: var(--tx, 0) var(--ty, 0);
 }
@@ -446,14 +446,12 @@
 }
 
 /* com hover/foco, a origem vai para a esquerda: a tinta entra por lá */
-.btn:focus-visible::before,
-.contact__btn:focus-visible::before {
+.btn:focus-visible::before {
   transform-origin: left;
 }
 
 @media (hover: hover) {
-  .btn:hover::before,
-  .contact__btn:hover::before {
+  .btn:hover::before {
     transform-origin: left;
   }
 }
@@ -673,28 +671,6 @@
   flex-wrap: wrap;
   gap: var(--space-xs) var(--space-sm);
   margin-top: var(--space-xs);
-}
-
-.hero__status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-  margin-top: var(--space-md);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--muted);
-}
-
-.hero__status-ok {
-  color: var(--accent);
-}
-
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: pulse 2.4s ease-out infinite;
 }
 
 /* ==========================================================
@@ -1301,161 +1277,283 @@
   background: var(--bg-soft);
 }
 
+/* Duas colunas no desktop: a frase à esquerda e o "Contact.java"
+   à direita. No celular, uma embaixo da outra. */
+.contact__layout {
+  display: grid;
+  gap: var(--space-md);
+  align-items: start;
+}
+
 .contact__text {
-  max-width: 56ch;
-  color: var(--muted);
-  margin-bottom: var(--space-md);
-}
-
-.contact__email {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-sm);
-  margin-bottom: var(--space-md);
-}
-
-/* email grande, com sublinhado que cresce no hover */
-.contact__address {
-  min-width: 0;
-  overflow-wrap: anywhere;
+  max-width: 36ch;
   font-family: var(--font-display);
-  /* em 375px, o --text-2xl (32px) fazia o email quebrar no meio
-     ("diego.aleola@gm | ail.com"); aqui ele encolhe com a tela e só
-     chega ao tamanho cheio em telas maiores */
-  font-size: clamp(1.3rem, 5.6vw, 3rem);
-  font-weight: 500;
-  font-variation-settings: "SOFT" 100, "opsz" 72;
-  background: linear-gradient(var(--accent), var(--accent)) left 100% / 0 2px no-repeat;
-  padding-bottom: 4px;
-  transition: background-size var(--dur) var(--ease-out), color var(--dur-fast);
+  font-size: var(--text-lg);
+  line-height: 1.45;
+  font-variation-settings: "SOFT" 100, "opsz" 48;
 }
 
-.contact__address:focus-visible {
-  color: var(--accent);
-  background-size: 100% 2px;
-}
-
-@media (hover: hover) {
-  .contact__address:hover {
-    color: var(--accent);
-    background-size: 100% 2px;
+@media (min-width: 900px) {
+  .contact__layout {
+    grid-template-columns: 5fr 7fr;
+    gap: var(--space-lg);
   }
 }
 
-.contact__links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-}
-
-.contact__btn {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 1rem 1.2rem;
+/* ----- O "arquivo" Contact.java ----- */
+.code-card {
+  min-width: 0;
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  font-weight: 500;
-  transition:
-    color var(--dur) var(--ease-out),
-    border-color var(--dur-fast),
-    translate var(--dur) var(--ease-out),
-    scale var(--dur-fast) var(--ease-out);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 2.4vw, 0.95rem);
 }
 
-/* a "tinta" que preenche o botão da esquerda para a direita */
-.contact__btn::before {
-  content: "";
+/* a "aba" com o nome do arquivo, como num editor */
+.code-card__bar {
+  display: flex;
+  padding-inline: var(--space-sm);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.code-card__file {
+  padding-block: 0.7rem;
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: -1px; /* a linha verde fica por cima da borda da barra */
+  color: var(--fg);
+}
+
+/* counter-reset/counter-increment: o CSS numera as linhas sozinho */
+.code-card__lines {
+  counter-reset: line;
+  padding-block: var(--space-xs);
+  overflow-x: auto; /* se a tela for muito estreita, rola só aqui dentro */
+}
+
+.code-line {
+  counter-increment: line;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 2.3em;
+  padding-left: 3.2em;
+  padding-right: var(--space-sm);
+  flex-wrap: wrap;
+  white-space: nowrap;
+  transition: background-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+/* número da linha na "calha" da esquerda */
+.code-line::before {
+  content: counter(line);
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: right; /* mesmo truque do .btn: sai pela direita */
-  transition: transform var(--dur) var(--ease-out);
+  left: 0;
+  width: 2.2em;
+  text-align: right;
+  color: var(--muted);
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-fast), opacity var(--dur-fast);
 }
 
-.contact__btn i {
-  font-size: 1.3rem;
-  transition: transform var(--dur) var(--ease-spring);
+/* O recuo das linhas tem a MESMA largura do ícone + espaço, então os
+   pontos do builder (.email, .github, .build...) ficam alinhados.
+   Em rem (e não em em) porque as linhas têm tamanhos de fonte diferentes. */
+.code__indent {
+  display: inline-block;
+  width: calc(var(--icon-size) + var(--icon-gap));
 }
 
-.contact__icon,
-.contact__arrow {
-  width: 1.2rem;
-  height: 1.2rem;
+/* Linhas importantes (email, LinkedIn, GitHub, currículo): maiores.
+   Linhas de "código puro" (builder, openTo, build): menores e apagadas. */
+.code-card__lines {
+  --icon-size: 1.6rem;
+  --icon-gap: 0.6rem;
+}
+
+.code-line--key {
+  font-size: 1.08em;
+  min-height: 2.9em;
+}
+
+.code-line--static {
+  font-size: 0.88em;
+  opacity: 0.7;
+}
+
+/* Ícone do app no começo da linha */
+.code-line__icon {
+  display: inline-grid;
+  place-items: center;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  margin-right: var(--icon-gap);
+  vertical-align: middle;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur-fast);
+}
+
+.code-line__icon i {
+  font-size: 1.05rem;
+}
+
+.code-line__icon svg {
+  width: 1.05rem;
+  height: 1.05rem;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform var(--dur) var(--ease-spring);
 }
 
-.contact__arrow {
-  margin-left: auto;
+/* Celular: ícone, calha dos números e fonte um pouco menores, para a
+   linha do email (a mais longa) caber sem rolar para o lado */
+@media (max-width: 480px) {
+  .code-card__lines {
+    --icon-size: 1.35rem;
+    --icon-gap: 0.45rem;
+  }
+
+  .code-line {
+    padding-left: 2.6em;
+    padding-right: 0.6rem;
+  }
+
+  .code-line::before {
+    width: 1.7em;
+  }
+
+  .code-line--key {
+    font-size: 1em;
+  }
+
+  .code-line__icon i,
+  .code-line__icon svg {
+    font-size: 0.9rem;
+    width: 0.9rem;
+    height: 0.9rem;
+  }
 }
 
-.contact__btn--cv {
-  border-style: dashed;
+.code-line__icon--email { color: var(--accent); }
+.code-line__icon--linkedin { color: var(--brand-linkedin); }
+.code-line__icon--github { color: var(--fg); }
+.code-line__icon--cv { color: var(--warm); }
+
+/* a linha inteira é clicável (o link ocupa o espaço que sobra).
+   display: block (e não flex) para os espaços entre as "palavras"
+   do código continuarem aparecendo. */
+.code-line__link,
+.code-line__code {
+  display: block;
+  flex: 1 0 auto; /* não encolhe: se faltar espaço, o "// copiar" desce de linha */
+  padding-block: 0.5em;
 }
 
-/* scale separado do translate do .magnetic (explicação nos BOTÕES) */
-.contact__btn:active {
-  scale: 0.97;
+.code-line__link .code__string {
+  background: linear-gradient(currentColor, currentColor) left 100% / 0 1px no-repeat;
+  transition: background-size var(--dur) var(--ease-out), color var(--dur-fast);
 }
 
-/* Teclado: mesmo preenchimento e mesma seta do hover */
-.contact__btn:focus-visible {
-  color: var(--accent-ink);
-  border-color: var(--accent);
-  border-style: solid;
+.code-line__arrow {
+  display: inline-block;
+  vertical-align: -0.1em;
+  margin-left: 0.5em;
+  width: 0.9em;
+  height: 0.9em;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  translate: -4px 4px;
+  transition: opacity var(--dur-fast), translate var(--dur) var(--ease-spring);
 }
 
-.contact__btn:focus-visible::before {
-  transform: scaleX(1);
+.code-line__hint {
+  transition: color var(--dur-fast);
 }
 
-.contact__btn:focus-visible .contact__arrow {
-  transform: translate(3px, -3px);
+/* botão "// copiar" no fim da linha do email */
+.code-line__action {
+  flex-shrink: 0;
+  margin-left: auto; /* fica sempre encostado à direita */
+  padding: 0.25em 0.6em;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 0.9em;
+  color: var(--muted);
+  transition: color var(--dur-fast), background-color var(--dur-fast), scale var(--dur-fast) var(--ease-out);
+}
+
+.code-line__action .code__comment {
+  color: inherit;
+}
+
+.code-line__action:active {
+  scale: 0.94;
+}
+
+/* Linha "ativa": fundo leve, barrinha verde à esquerda, número aceso,
+   string sublinhada e a setinha aparecendo. Vale para hover e teclado. */
+.code-line:has(:focus-visible) {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.code-line:has(:focus-visible)::before {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.code-line__action:focus-visible {
+  color: var(--accent);
+}
+
+.code-line__link:focus-visible .code-line__icon {
+  transform: rotate(-8deg) scale(1.15);
 }
 
 @media (hover: hover) {
-  .contact__btn:hover {
-    color: var(--accent-ink);
-    border-color: var(--accent);
-    border-style: solid; /* o do currículo deixa de ser tracejado */
+  .code-line:not(.code-line--static):hover {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    box-shadow: inset 2px 0 0 var(--accent);
   }
 
-  .contact__btn:hover::before {
-    transform: scaleX(1);
+  .code-line:not(.code-line--static):hover::before {
+    color: var(--accent);
+    opacity: 1;
   }
 
-  .contact__btn:hover i {
-    transform: rotate(-12deg) scale(1.15);
+  .code-line__link:hover .code__string {
+    color: var(--accent);
+    background-size: 100% 1px;
   }
 
-  .contact__btn:hover .contact__arrow {
-    transform: translate(3px, -3px);
+  .code-line__link:hover .code-line__icon {
+    transform: rotate(-8deg) scale(1.15);
+    background: color-mix(in srgb, currentColor 20%, transparent);
   }
 
-  .contact__btn:hover .contact__icon {
-    animation: nudge-down 0.8s var(--ease-out) infinite;
-  }
-}
-
-@media (min-width: 768px) {
-  .contact__links {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .code-line__link:hover .code-line__arrow {
+    opacity: 1;
+    translate: 0 0;
   }
 
-  .contact__btn {
-    flex: 1 1 200px;
+  .code-line__link:hover .code-line__hint {
+    color: var(--accent);
+  }
+
+  .code-line__action:hover {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
   }
 }
 
@@ -1474,14 +1572,6 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-xs) var(--space-md);
-}
-
-.footer__status {
-  font-size: var(--text-xs);
-}
-
-.footer .ok {
-  color: var(--accent);
 }
 
 .footer__top {

@@ -10,12 +10,6 @@
   50% { opacity: 0; }
 }
 
-/* bolinha "online" do status: um anel que se expande e some */
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
-  80%, 100% { box-shadow: 0 0 0 9px transparent; }
-}
-
 @keyframes pulse-ring {
   0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--warm) 50%, transparent); }
   80%, 100% { box-shadow: 0 0 0 10px transparent; }
