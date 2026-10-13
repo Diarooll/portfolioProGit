@@ -33,13 +33,12 @@
   const root = document.documentElement; // o <html>
 
   // Media queries lidas pelo JS. ".matches" diz se valem agora.
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(pointer: fine)"); // mouse/trackpad
 
   // Efeitos que seguem o mouse só fazem sentido com mouse e sem
   // pedido de "menos movimento".
   function canAnimatePointer() {
-    return finePointer.matches && !reducedMotion.matches;
+    return finePointer.matches; // só com mouse/trackpad (no toque não faz sentido)
   }
 
   /* -------------------------------------------------------------------
