@@ -164,9 +164,22 @@ code {
   width: 0.55em;
   height: 1.1em;
   margin-left: 0.15em;
+  /* margem negativa = largura + margem: o cursor não "ocupa" espaço,
+     então nunca empurra o título para uma segunda linha */
+  margin-right: -0.7em;
   background: var(--accent);
   opacity: 0;
   transition: opacity var(--dur-fast);
+}
+
+/* Títulos longos (ex.: List<Project> projects = diego.getProjects();)
+   podem quebrar linha em vez de serem cortados com "..." */
+.section__code--wrap {
+  white-space: normal;
+  overflow: visible;
+  /* os h2 usam text-wrap: balance (equilibra as linhas), mas em código
+     isso quebraria a linha à toa. Aqui só quebra se não couber. */
+  text-wrap: wrap;
 }
 
 /* o "// List<Project>" do título de projetos fica pequeno ao lado */
