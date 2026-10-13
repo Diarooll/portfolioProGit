@@ -30,7 +30,6 @@
  *   - ~30 quadros por segundo (o olho não nota diferença aqui).
  *   - Pausa quando o hero sai da tela ou a aba fica escondida.
  *   - DPR (densidade de pixels da tela) limitado a 2.
- *   - Com prefers-reduced-motion: desenha 1 quadro parado e pronto.
  * ===================================================================== */
 
 (function () {
@@ -64,7 +63,6 @@
     fadeInMs: 1400      // as curvas surgem suavemente ao carregar
   };
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(pointer: fine)");
   const colorScheme = window.matchMedia("(prefers-color-scheme: light)");
 
@@ -335,9 +333,7 @@
     }
 
     // Surgimento suave nos primeiros instantes
-    const fadeIn = reducedMotion.matches
-      ? 1
-      : Math.min(1, (performance.now() - startTime) / CONFIG.fadeInMs);
+    const fadeIn = Math.min(1, (performance.now() - startTime) / CONFIG.fadeInMs);
     ctx.globalAlpha = fadeIn;
 
     ctx.lineJoin = "round";
@@ -378,7 +374,7 @@
   }
 
   function start() {
-    if (running || reducedMotion.matches) return;
+    if (running) return;
     if (!heroVisible || document.hidden) return;
     running = true;
     lastFrame = performance.now();
@@ -395,7 +391,7 @@
    * ------------------------------------------------------------------- */
   if (hero) {
     hero.addEventListener("pointermove", function (event) {
-      if (!finePointer.matches || reducedMotion.matches) return;
+      if (!finePointer.matches) return;
       // posição do mouse relativa ao canvas
       const rect = canvas.getBoundingClientRect();
       hill.tx = event.clientX - rect.left;
@@ -451,24 +447,11 @@
   document.addEventListener("themechange", onThemeChange);
   if (colorScheme.addEventListener) colorScheme.addEventListener("change", onThemeChange);
 
-  // Preferência de movimento mudou com a página aberta
-  if (reducedMotion.addEventListener) {
-    reducedMotion.addEventListener("change", function () {
-      if (reducedMotion.matches) {
-        stop();
-        hill.amp = hill.targetAmp = 0;
-        draw();
-      } else {
-        start();
-      }
-    });
-  }
-
   /* -------------------------------------------------------------------
    * Início
    * ------------------------------------------------------------------- */
   startTime = performance.now();
   readColors();
-  resize();   // mede e desenha o 1º quadro (é o quadro estático do reduced-motion)
+  resize();   // mede o canvas e desenha o 1º quadro
   start();
 })();

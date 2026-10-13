@@ -8,9 +8,6 @@
  * passa para a próxima -> repete para sempre.
  * O cursor piscando é feito só com CSS (.typing::after).
  *
- * Com prefers-reduced-motion (pessoa pediu menos movimento ao sistema),
- * mostramos só a 1ª palavra, parada.
- *
  * Quando o idioma muda (evento "langchange"), reiniciamos com as
  * palavras do novo idioma. Para não rodar DOIS loops ao mesmo tempo,
  * sempre cancelamos o timer anterior com clearTimeout.
@@ -29,7 +26,6 @@
   const GAP_TIME = 350;     // pausa com o texto vazio antes da próxima
 
   // matchMedia lê uma media query pelo JS (a mesma sintaxe do CSS)
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   let words = [];
   let wordIndex = 0;   // qual palavra da lista
@@ -86,7 +82,7 @@
     words = list && list.length ? list : readWords();
     wordIndex = 0;
 
-    if (reducedMotion.matches || words.length < 2) {
+    if (words.length < 2) {
       // Sem animação: primeira palavra fixa
       el.textContent = words[0];
       return;
@@ -110,13 +106,6 @@
       start(list.map(String));
     }
   });
-
-  // Se a pessoa mudar a preferência de movimento com a página aberta
-  if (reducedMotion.addEventListener) {
-    reducedMotion.addEventListener("change", function () {
-      start(words);
-    });
-  }
 
   start(readWords());
 })();

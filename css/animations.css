@@ -1,7 +1,6 @@
 /* ==========================================================
    ANIMATIONS: keyframes, entrada do hero e reveal ao rolar.
-   Regra de ouro: tudo aqui é desligado em
-   @media (prefers-reduced-motion: reduce), no fim do arquivo.
+   Veja no fim do arquivo por que as animações rodam sempre.
    ========================================================== */
 
 /* ----- Keyframes ----- */
@@ -129,39 +128,11 @@ html.js .about__photo.reveal.reveal--visible {
 }
 
 /* ==========================================================
-   MOVIMENTO REDUZIDO
-   Quem ativa "reduzir movimento" no sistema vê tudo parado e
-   já visível. O conteúdo é o mesmo, só sem animação.
+   MOVIMENTO REDUZIDO: decisão deste site
+   Antes, quem tinha "reduzir movimento" ligado no sistema via a
+   página toda parada. Muitos PCs Windows vêm com essa opção
+   desligada por padrão ("Efeitos de animação"), então boa parte
+   dos visitantes nunca via as animações. Por isso as animações
+   rodam sempre. Elas já são curtas e suaves (fades e deslocamentos
+   pequenos), sem nada piscando rápido.
    ========================================================== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  /* Os seletores repetem os de cima (.timeline__item.reveal,
-     .about__photo.reveal) para ter a MESMA força: senão o
-     translate -16px e o scale 0.96 deles venceriam este reset. */
-  html.js .intro,
-  html.js .reveal,
-  html.js .timeline__item.reveal,
-  html.js .about__photo.reveal {
-    opacity: 1;
-    translate: none;
-    scale: none;
-    animation: none;
-  }
-
-  /* o ímã do .magnetic não deve mexer nada */
-  .magnetic {
-    translate: none;
-  }
-
-  .typing::after {
-    animation: none;
-  }
-}

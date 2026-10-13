@@ -16,7 +16,7 @@
  *     --delay no HTML, damos 0ms, 80ms, 160ms... para não aparecerem
  *     todos de uma vez.
  *   - Sem IntersectionObserver (navegador muito antigo) ou com
- *     prefers-reduced-motion: mostra tudo de uma vez.
+ *     navegadores muito antigos (sem IntersectionObserver): mostra tudo de uma vez.
  * ===================================================================== */
 
 (function () {
@@ -27,7 +27,6 @@
 
   const STAGGER_MS = 80;
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function showAll() {
     items.forEach(function (el) {
@@ -35,7 +34,7 @@
     });
   }
 
-  if (reducedMotion || !("IntersectionObserver" in window)) {
+  if (!("IntersectionObserver" in window)) {
     showAll();
     return;
   }
