@@ -148,9 +148,11 @@ code {
   overflow: hidden;
   white-space: nowrap;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-weight: 400;
-  letter-spacing: 0;
+  /* a chamada Java É o título: grande, em fonte mono */
+  font-size: clamp(1.45rem, 4.2vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   font-variation-settings: normal;
 }
 
@@ -167,6 +169,21 @@ code {
   transition: opacity var(--dur-fast);
 }
 
+/* o "// List<Project>" do título de projetos fica pequeno ao lado */
+.section__code .code__comment {
+  font-size: 0.45em;
+  font-weight: 400;
+  letter-spacing: 0;
+  vertical-align: middle;
+  margin-left: 0.6em;
+}
+
+@media (max-width: 480px) {
+  .section__code .code__comment {
+    display: none; /* no celular não cabe */
+  }
+}
+
 .section__label {
   font-size: var(--text-2xl);
   transition: translate var(--dur) var(--ease-out);
@@ -179,6 +196,10 @@ code {
 .code__method { color: var(--accent); }
 .code__type,
 .code__const { color: var(--warm); }
+.code__keyword {
+  color: var(--accent);
+  font-weight: 500;
+}
 .code__punct { color: var(--muted); }
 .code__comment {
   color: var(--muted);
@@ -211,4 +232,19 @@ code {
   .section {
     padding-block: var(--space-xl);
   }
+}
+
+/* Esconde visualmente, mas o leitor de tela continua lendo.
+   Usado no nome das seções: na tela aparece "diego.getAbout();",
+   e o leitor de tela anuncia "Sobre mim". */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
