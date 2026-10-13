@@ -17,10 +17,10 @@
     "skip": "Pular para o conteúdo"
   },
   "sections": {
-    "about": "/sobre",
-    "projects": "/projetos",
-    "journey": "/jornada",
-    "contact": "/contato"
+    "about": "Sobre mim",
+    "projects": "Projetos",
+    "journey": "Jornada",
+    "contact": "Contato"
   },
   "hero": {
     "greeting": "Olá, eu sou",
@@ -100,12 +100,13 @@
   },
   "contact": {
     "text": "Procuro estágio ou vaga júnior, e também gosto de conversar sobre back-end. O jeito mais rápido de falar comigo é por email.",
-    "copy": "Copiar email",
+    "copy": "copiar",
     "copied": "Email copiado",
     "copyFail": "Não deu para copiar. Selecione o email e copie manualmente.",
-    "cv": "Baixar currículo"
+    "cv": "baixar",
+    "cvLabel": "Baixar currículo"
   },
   "footer": {
-    "text": "Feito à mão com HTML, CSS e JavaScript"
+    "text": "Feito com HTML, CSS e JavaScript, com ajuda de inteligência artificial"
   }
 }

@@ -101,16 +101,16 @@
             <span data-i18n="hero.ctaContact">Falar comigo</span>
           </a>
         </div>
-        <p class="hero__status intro" style="--i: 5" aria-hidden="true">
-          <span class="status-dot"></span> GET /diego <span class="hero__status-ok">200 OK</span>
-        </p>
       </div>
     </section>
 
     <!-- ===== SOBRE ===== -->
     <section id="sobre" class="section" aria-labelledby="sobre-title">
       <div class="container">
-        <h2 class="section__title reveal" id="sobre-title"><span class="route">GET</span><span class="section__path" data-i18n="sections.about">/sobre</span></h2>
+        <h2 class="section__title reveal" id="sobre-title">
+          <span class="section__code" aria-hidden="true"><span class="code__obj">diego</span><span class="code__punct">.</span><span class="code__method">getAbout</span><span class="code__punct">();</span></span>
+          <span class="section__label" data-i18n="sections.about">Sobre mim</span>
+        </h2>
 
         <div class="about">
           <figure class="about__photo reveal" id="about-photo">
@@ -155,7 +155,10 @@
     <!-- ===== PROJETOS ===== -->
     <section id="projetos" class="section" aria-labelledby="projetos-title">
       <div class="container">
-        <h2 class="section__title reveal" id="projetos-title"><span class="route">GET</span><span class="section__path" data-i18n="sections.projects">/projetos</span></h2>
+        <h2 class="section__title reveal" id="projetos-title">
+          <span class="section__code" aria-hidden="true"><span class="code__obj">diego</span><span class="code__punct">.</span><span class="code__method">getProjects</span><span class="code__punct">();</span><span class="code__comment"> // List&lt;Project&gt;</span></span>
+          <span class="section__label" data-i18n="sections.projects">Projetos</span>
+        </h2>
         <p class="section__intro reveal" data-i18n="projects.intro">Projetos que fiz estudando, com o que aprendi em cada um.</p>
 
         <div class="projects">
@@ -249,7 +252,10 @@
     <!-- ===== JORNADA ===== -->
     <section id="jornada" class="section" aria-labelledby="jornada-title">
       <div class="container">
-        <h2 class="section__title reveal" id="jornada-title"><span class="route">GET</span><span class="section__path" data-i18n="sections.journey">/jornada</span></h2>
+        <h2 class="section__title reveal" id="jornada-title">
+          <span class="section__code" aria-hidden="true"><span class="code__obj">diego</span><span class="code__punct">.</span><span class="code__method">getJourney</span><span class="code__punct">();</span></span>
+          <span class="section__label" data-i18n="sections.journey">Jornada</span>
+        </h2>
         <p class="section__intro reveal" data-i18n="journey.intro">O caminho até aqui, em ordem.</p>
 
         <!-- --progress (0 a 1) é atualizado pelo main.js conforme o scroll -->
@@ -281,30 +287,61 @@
     <!-- ===== CONTATO ===== -->
     <section id="contato" class="section section--contact" aria-labelledby="contato-title">
       <div class="container">
-        <h2 class="section__title reveal" id="contato-title"><span class="route route--post">POST</span><span class="section__path" data-i18n="sections.contact">/contato</span></h2>
-        <p class="contact__text reveal" data-i18n="contact.text">Procuro estágio ou vaga júnior, e também gosto de conversar sobre back-end. O jeito mais rápido de falar comigo é por email.</p>
+        <h2 class="section__title reveal" id="contato-title">
+          <span class="section__code" aria-hidden="true"><span class="code__obj">diego</span><span class="code__punct">.</span><span class="code__method">contact</span><span class="code__punct">();</span></span>
+          <span class="section__label" data-i18n="sections.contact">Contato</span>
+        </h2>
 
-        <div class="contact__email reveal">
-          <a class="contact__address" href="mailto:diego.aleola@gmail.com" id="email-address">diego.aleola@gmail.com</a>
-          <button class="btn btn--ghost btn--small" type="button" id="copy-email" data-email="diego.aleola@gmail.com">
-            <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>
-            <span data-i18n="contact.copy">Copiar email</span>
-          </button>
-        </div>
 
-        <div class="contact__links reveal">
-          <a class="contact__btn magnetic" href="https://www.linkedin.com/in/diego-olalla/" target="_blank" rel="noopener">
-            <i class="devicon-linkedin-plain" aria-hidden="true"></i><span>LinkedIn</span>
-            <svg class="contact__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
-          <a class="contact__btn magnetic" href="https://github.com/Diarooll" target="_blank" rel="noopener">
-            <i class="devicon-github-original" aria-hidden="true"></i><span>GitHub</span>
-            <svg class="contact__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
-          <!-- TODO: colocar o currículo em assets/cv.pdf (versão sem telefone/endereço) -->
-          <a class="contact__btn contact__btn--cv magnetic" href="assets/cv.pdf" download>
-            <svg class="contact__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-i18n="contact.cv">Baixar currículo</span>
-          </a>
+        <div class="contact__layout">
+          <p class="contact__text reveal" data-i18n="contact.text">Procuro estágio ou vaga júnior, e também gosto de conversar sobre back-end. O jeito mais rápido de falar comigo é por email.</p>
+
+          <!-- Os contatos escritos como código Java (padrão builder).
+               Cada linha é um link de verdade; o CSS numera as linhas
+               (counter) e destaca a linha no hover, como num editor. -->
+          <div class="code-card reveal" style="--delay: 0.1s">
+            <div class="code-card__bar" aria-hidden="true">
+              <span class="code-card__file">Contact.java</span>
+            </div>
+            <ol class="code-card__lines">
+              <li class="code-line code-line--static" aria-hidden="true">
+                <span class="code-line__code"><span class="code__type">Contact</span> <span class="code__var">diego</span> <span class="code__punct">=</span> <span class="code__type">Contact</span><span class="code__punct">.</span><span class="code__method">builder</span><span class="code__punct">()</span></span>
+              </li>
+              <li class="code-line code-line--key">
+                <a class="code-line__link" href="mailto:diego.aleola@gmail.com" aria-label="Email: diego.aleola@gmail.com">
+                  <span class="code-line__icon code-line__icon--email" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></span><span class="code__punct">.</span><span class="code__method">email</span><span class="code__punct">(</span><span class="code__string">"<span id="email-address">diego.aleola@gmail.com</span>"</span><span class="code__punct">)</span>
+                </a>
+                <button class="code-line__action" type="button" id="copy-email" data-email="diego.aleola@gmail.com">
+                  <span class="code__comment">// </span><span data-i18n="contact.copy">copiar</span>
+                </button>
+              </li>
+              <li class="code-line code-line--key">
+                <a class="code-line__link" href="https://www.linkedin.com/in/diego-olalla/" target="_blank" rel="noopener" aria-label="LinkedIn: in/diego-olalla">
+                  <span class="code-line__icon code-line__icon--linkedin" aria-hidden="true"><i class="devicon-linkedin-plain"></i></span><span class="code__punct">.</span><span class="code__method">linkedin</span><span class="code__punct">(</span><span class="code__string">"in/diego-olalla"</span><span class="code__punct">)</span>
+                  <svg class="code-line__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </a>
+              </li>
+              <li class="code-line code-line--key">
+                <a class="code-line__link" href="https://github.com/Diarooll" target="_blank" rel="noopener" aria-label="GitHub: Diarooll">
+                  <span class="code-line__icon code-line__icon--github" aria-hidden="true"><i class="devicon-github-original"></i></span><span class="code__punct">.</span><span class="code__method">github</span><span class="code__punct">(</span><span class="code__string">"Diarooll"</span><span class="code__punct">)</span>
+                  <svg class="code-line__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+                </a>
+              </li>
+              <li class="code-line code-line--key">
+                <!-- TODO: colocar o currículo em assets/cv.pdf (versão sem telefone/endereço) -->
+                <a class="code-line__link" href="assets/cv.pdf" download aria-label="Baixar currículo" data-i18n-attr="aria-label:contact.cvLabel">
+                  <span class="code-line__icon code-line__icon--cv" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14.5l3 3 3-3"/></svg></span><span class="code__punct">.</span><span class="code__method">cv</span><span class="code__punct">(</span><span class="code__string">"cv.pdf"</span><span class="code__punct">)</span>
+                  <span class="code__comment code-line__hint"> // <span data-i18n="contact.cv">baixar</span></span>
+                </a>
+              </li>
+              <li class="code-line code-line--static" aria-hidden="true">
+                <span class="code-line__code"><span class="code__indent"></span><span class="code__punct">.</span><span class="code__method">openTo</span><span class="code__punct">(</span><span class="code__const">INTERNSHIP</span><span class="code__punct">,</span> <span class="code__const">JUNIOR</span><span class="code__punct">)</span></span>
+              </li>
+              <li class="code-line code-line--static" aria-hidden="true">
+                <span class="code-line__code"><span class="code__indent"></span><span class="code__punct">.</span><span class="code__method">build</span><span class="code__punct">();</span></span>
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
     </section>
@@ -313,8 +350,7 @@
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="container footer__inner">
-      <p>© <span id="year">2026</span> Diego Olalla · <span data-i18n="footer.text">Feito à mão com HTML, CSS e JavaScript</span></p>
-      <p class="footer__status"><code>HTTP/1.1 <span class="ok">200 OK</span></code></p>
+      <p>© <span id="year">2026</span> Diego Olalla · <span data-i18n="footer.text">Feito com HTML, CSS e JavaScript, com ajuda de inteligência artificial</span></p>
       <a href="#inicio" class="footer__top" aria-label="Voltar ao início" data-i18n-attr="aria-label:nav.home">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
       </a>

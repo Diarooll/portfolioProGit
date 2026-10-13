@@ -17,10 +17,10 @@
     "skip": "Skip to content"
   },
   "sections": {
-    "about": "/about",
-    "projects": "/projects",
-    "journey": "/journey",
-    "contact": "/contact"
+    "about": "About me",
+    "projects": "Projects",
+    "journey": "Journey",
+    "contact": "Contact"
   },
   "hero": {
     "greeting": "Hi, I'm",
@@ -100,12 +100,13 @@
   },
   "contact": {
     "text": "I'm looking for an internship or a junior role, and I'm always up for talking about back-end. Email is the fastest way to reach me.",
-    "copy": "Copy email",
+    "copy": "copy",
     "copied": "Email copied",
     "copyFail": "Couldn't copy. Select the email and copy it manually.",
-    "cv": "Download CV"
+    "cv": "download",
+    "cvLabel": "Download CV"
   },
   "footer": {
-    "text": "Handmade with HTML, CSS and JavaScript"
+    "text": "Built with HTML, CSS and JavaScript, with the help of artificial intelligence"
   }
 }

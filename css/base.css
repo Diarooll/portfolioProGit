@@ -129,52 +129,71 @@ code {
   border-top: 1px solid var(--line);
 }
 
+/* Título de seção = uma linha de código Java + o nome da seção.
+   Ex.:  diego.getProjects();  // List<Project>
+         Projetos
+   A linha de código é decorativa (aria-hidden no HTML). */
 .section__title {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.5em;
-  font-size: var(--text-2xl);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
   margin-bottom: var(--space-sm);
 }
 
-/* o "GET" / "POST" antes dos títulos: toque de back-end */
-.route {
+.section__code {
+  display: inline-block; /* inline-block (e não flex) preserva os espaços do texto */
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  padding: 0.3em 0.6em;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-sm);
-  color: var(--accent);
-  transform: translateY(-0.4em);
-  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-variation-settings: normal;
 }
 
-.route--post {
-  border-color: var(--warm);
-  color: var(--warm);
+/* cursor de editor que aparece no fim da linha quando o mouse passa */
+.section__code::after {
+  content: "";
+  display: inline-block;
+  vertical-align: -0.2em;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 0.15em;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity var(--dur-fast);
 }
 
-.section__path {
-  transition: letter-spacing var(--dur) var(--ease-out);
+.section__label {
+  font-size: var(--text-2xl);
+  transition: translate var(--dur) var(--ease-out);
 }
 
-/* Passar o mouse no título "acende" o método HTTP e o caminho
-   "respira" um pouco (só com mouse: no celular o hover fica preso) */
+/* ----- Cores de "syntax highlight" (usadas nos títulos e no contato) ----- */
+.code__obj,
+.code__var,
+.code__string { color: var(--fg); }
+.code__method { color: var(--accent); }
+.code__type,
+.code__const { color: var(--warm); }
+.code__punct { color: var(--muted); }
+.code__comment {
+  color: var(--muted);
+  font-style: italic;
+  opacity: 0.8;
+}
+
 @media (hover: hover) {
-  .section__title:hover .route {
-    background: var(--accent);
-    color: var(--accent-ink);
+  .section__title:hover .section__code::after {
+    opacity: 1;
+    animation: blink 1.05s steps(1) infinite;
   }
 
-  .section__title:hover .route--post {
-    background: var(--warm);
-  }
-
-  .section__title:hover .section__path {
-    letter-spacing: 0.005em;
+  .section__title:hover .section__label {
+    translate: 4px 0;
   }
 }
 

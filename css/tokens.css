@@ -22,6 +22,7 @@
   --topo-line: rgba(181, 199, 122, 0.16); /* curvas de nível do hero */
   --topo-line-strong: rgba(210, 168, 106, 0.30);
   --shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.7);
+  --brand-linkedin: #3B8FD9; /* azul do LinkedIn, clareado para o fundo escuro */
   --icon-sun: block;      /* qual ícone o botão de tema mostra */
   --icon-moon: none;
   color-scheme: dark;
@@ -83,6 +84,7 @@
     --topo-line: rgba(80, 106, 40, 0.16);
     --topo-line-strong: rgba(133, 89, 42, 0.30);
     --shadow: 0 18px 40px -24px rgba(40, 52, 30, 0.35);
+    --brand-linkedin: #0A66C2;
     --icon-sun: none;
     --icon-moon: block;
     color-scheme: light;
@@ -103,6 +105,7 @@
   --topo-line: rgba(80, 106, 40, 0.16);
   --topo-line-strong: rgba(133, 89, 42, 0.30);
   --shadow: 0 18px 40px -24px rgba(40, 52, 30, 0.35);
+  --brand-linkedin: #0A66C2;
   --icon-sun: none;
   --icon-moon: block;
   color-scheme: light;
