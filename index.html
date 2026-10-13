@@ -166,11 +166,15 @@
     <section id="projetos" class="section" aria-labelledby="projetos-title">
       <div class="container">
         <h2 class="section__title reveal" id="projetos-title">
-          <span class="section__code" aria-hidden="true"><span class="code__obj">diego</span><span class="code__punct">.</span><span class="code__method">getProjects</span><span class="code__punct">();</span><span class="code__comment"> // List&lt;Project&gt;</span></span>
+          <span class="section__code section__code--wrap" aria-hidden="true"><span class="code__type">List</span><span class="code__punct">&lt;</span><span class="code__type">Project</span><span class="code__punct">&gt;</span> <span class="code__var">projects</span> <span class="code__punct">=</span> <span class="code__obj">diego</span><span class="code__punct">.</span><span class="code__method">getProjects</span><span class="code__punct">();</span></span>
           <span class="section__label sr-only" data-i18n="sections.projects">Projetos</span>
         </h2>
         <p class="section__intro reveal" data-i18n="projects.intro">Projetos que fiz estudando, com o que aprendi em cada um.</p>
 
+        <!-- O "for each" do Java em volta dos cards: cada card é um "p" -->
+        <div class="loop">
+          <p class="loop__line reveal" aria-hidden="true"><span class="code__keyword">for</span> <span class="code__punct">(</span><span class="code__type">Project</span> <span class="code__var loop__p">p</span> <span class="code__punct">:</span> <span class="code__var">projects</span><span class="code__punct">) {</span></p>
+          <div class="loop__body">
         <div class="projects">
           <article class="card reveal" style="--delay: 0s">
             <div class="card__head">
@@ -255,6 +259,9 @@
               <span data-i18n="projects.wip.link">Ver meu GitHub</span><svg class="card__link-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </span>
           </a>
+        </div>
+          </div>
+          <p class="loop__line loop__line--close reveal" aria-hidden="true"><span class="code__punct">}</span></p>
         </div>
       </div>
     </section>

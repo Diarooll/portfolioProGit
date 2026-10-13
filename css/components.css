@@ -933,6 +933,47 @@
   }
 }
 
+/* ----- O "for each" em volta dos cards -----
+   for (Project p : projects) {
+       ...cards...
+   }
+   A borda tracejada à esquerda é a "guia de indentação" dos editores. */
+.loop__line {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+  line-height: 1.6;
+}
+
+.loop__line--close {
+  margin-top: var(--space-xs);
+}
+
+.loop__body {
+  margin-top: var(--space-sm);
+  margin-left: 0.3rem;
+  padding-left: clamp(0.9rem, 3.5vw, 2.2rem);
+  border-left: 1px dashed var(--line);
+  transition: border-color var(--dur);
+}
+
+/* o "p" do loop: acende quando o mouse está em algum card,
+   como se mostrasse "este card é o p da vez" */
+.loop__p {
+  display: inline-block;
+  transition: color var(--dur-fast), scale var(--dur) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .loop:has(.card:hover) .loop__p {
+    color: var(--accent);
+    scale: 1.25;
+  }
+
+  .loop:has(.card:hover) .loop__body {
+    border-left-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  }
+}
+
 /* O main.js coloca --mx / --my (posição do mouse dentro do card)
    e o ::before desenha uma "lanterna" de luz nesse ponto. */
 .card {
