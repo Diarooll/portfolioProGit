@@ -108,5 +108,8 @@
   },
   "footer": {
     "text": "Built with HTML, CSS and JavaScript, with the help of artificial intelligence"
+  },
+  "declaration": {
+    "comment": "each section below is a method of this object"
   }
 }

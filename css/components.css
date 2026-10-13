@@ -674,6 +674,43 @@
 }
 
 /* ==========================================================
+   DECLARAÇÃO: Developer diego = new Developer("Java Backend");
+   Uma faixa entre o hero e o Sobre. Ela "cria" o objeto diego,
+   e os títulos das seções chamam métodos dele (diego.getAbout()...).
+   ========================================================== */
+.declaration {
+  border-top: 1px solid var(--line);
+  background: var(--bg-soft);
+  padding-block: var(--space-md);
+}
+
+.declaration__code {
+  font-family: var(--font-mono);
+  font-size: clamp(0.95rem, 2.6vw, 1.35rem);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+/* cursor de editor piscando no fim da linha */
+.declaration__end::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: 0.2em;
+  vertical-align: -0.2em;
+  background: var(--accent);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+/* o comentário fica numa linha própria, ACIMA do código (como em Java) */
+.declaration__comment {
+  display: block;
+  font-size: 0.75em;
+  margin-bottom: 0.2em;
+}
+
+/* ==========================================================
    SOBRE
    ========================================================== */
 .about {
