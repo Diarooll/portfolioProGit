@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "title": "Diego Olalla · Java Back-end",
+    "description": "Portfolio of Diego Olalla, a Software Engineering student at FIAP focused on Java and Spring Boot back-end."
+  },
+  "nav": {
+    "label": "Main navigation",
+    "menu": "Open menu",
+    "home": "Back to top",
+    "langLabel": "Switch language to Portuguese",
+    "langNext": "PT",
+    "themeLabel": "Toggle light/dark theme",
+    "about": "About",
+    "projects": "Projects",
+    "journey": "Journey",
+    "contact": "Contact",
+    "skip": "Skip to content"
+  },
+  "sections": {
+    "about": "/about",
+    "projects": "/projects",
+    "journey": "/journey",
+    "contact": "/contact"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "name": "Diego Olalla",
+    "prefix": "I build",
+    "words": [
+      "APIs",
+      "systems",
+      "business rules",
+      "Java projects"
+    ],
+    "lead": "Software Engineering student at FIAP, learning back-end with Java and Spring Boot.",
+    "ctaProjects": "See projects",
+    "ctaContact": "Get in touch"
+  },
+  "about": {
+    "photoAlt": "Diego smiling in the audience at the FIAP Talent Summit",
+    "caption": "Talent Summit · FIAP",
+    "p1": "I study Software Engineering and the back-end is the part I like most, the side behind the screen: APIs, business rules and data.",
+    "p2": "I don't have professional experience yet. I'm building a solid base in Java and studying Spring Boot and SQL. I learn best by building projects, and their code is here."
+  },
+  "stack": {
+    "focus": "Focus",
+    "also": "I've also used",
+    "learning": "learning"
+  },
+  "projects": {
+    "intro": "Projects I made while studying, with what I learned from each one.",
+    "learned": "What I learned",
+    "tagsLabel": "Technologies",
+    "code": "Code",
+    "demo": "Live demo",
+    "p1": {
+      "title": "personalProject",
+      "desc": "My first portfolio. I made it to practice front-end, with the structure in HTML and the styling in CSS.",
+      "learned": "Building a page layout from scratch, organizing CSS and publishing a site on GitHub Pages."
+    },
+    "p2": {
+      "title": "JavaNelio",
+      "desc": "Exercises from Nelio Alves' Java course. The InterestService interface calculates interest and has two implementations, BrazilInterestService and UsaInterestService.",
+      "learned": "Interfaces, polymorphism and default methods. Each country follows the same contract with its own rate.",
+      "tagOop": "OOP"
+    },
+    "p3": {
+      "title": "This portfolio",
+      "desc": "Built with plain HTML, CSS and JavaScript, no framework. It comes in Portuguese and English, has a light and a dark theme, and the animations tone down if your system asks for less motion.",
+      "learned": "IntersectionObserver, fetching JSON, custom events, Canvas and accessibility."
+    },
+    "wip": {
+      "title": "Next project: a Spring Boot API",
+      "desc": "I'm studying to build my first REST API with Spring Boot and a database. Follow along on GitHub.",
+      "link": "See my GitHub"
+    }
+  },
+  "journey": {
+    "intro": "How I got here, in order.",
+    "i1": {
+      "date": "Computer Science · 1 semester",
+      "title": "The start",
+      "desc": "I took one semester of Computer Science and fell in love with logic and with building projects in languages like Java and Python."
+    },
+    "i2": {
+      "date": "FIAP · in progress",
+      "title": "Software Engineering",
+      "desc": "I now study Software Engineering at FIAP, focusing on back-end development."
+    },
+    "i3": {
+      "date": "in progress",
+      "title": "Data Structures and Algorithms",
+      "desc": "I'm taking data structures and algorithms courses to get a more solid base and write more efficient code."
+    },
+    "next": {
+      "date": "next step",
+      "title": "Back-end internship or junior role",
+      "desc": "I want to join a team where I can learn from more experienced people and help on the back-end with Java and Spring Boot."
+    }
+  },
+  "contact": {
+    "text": "I'm looking for an internship or a junior role, and I'm always up for talking about back-end. Email is the fastest way to reach me.",
+    "copy": "Copy email",
+    "copied": "Email copied",
+    "copyFail": "Couldn't copy. Select the email and copy it manually.",
+    "cv": "Download CV"
+  },
+  "footer": {
+    "text": "Handmade with HTML, CSS and JavaScript"
+  }
+}

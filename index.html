@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diego Olalla · Back-end Java</title>
+  <meta name="description" content="Portfólio de Diego Olalla, estudante de Engenharia de Software na FIAP com foco em back-end Java e Spring Boot.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <!-- Antes de qualquer CSS:
+       1) marca que o JS está ativo (o CSS só esconde os .reveal com html.js)
+       2) aplica o tema salvo, para a página não "piscar" no tema errado -->
+  <script>
+    document.documentElement.classList.add("js");
+    try {
+      var savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "light" || savedTheme === "dark") {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      }
+    } catch (e) {}
+  </script>
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..700,50..100&family=IBM+Plex+Mono:wght@400;500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Ícones de tecnologia (Devicon) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
+
+  <!-- Estilos (a ordem importa: tokens primeiro) -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <a class="skip-link" href="#sobre" data-i18n="nav.skip">Pular para o conteúdo</a>
+
+  <!-- Barra fininha de progresso de leitura -->
+  <div class="progress" aria-hidden="true"><span class="progress__bar" id="progress-bar"></span></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" id="navbar">
+    <nav class="container navbar__inner" aria-label="Navegação principal" data-i18n-attr="aria-label:nav.label">
+      <a href="#inicio" class="navbar__avatar" aria-label="Voltar ao início" data-i18n-attr="aria-label:nav.home">
+        <img src="assets/avatar.jpg" width="40" height="40" alt="Diego">
+      </a>
+
+      <ul class="navbar__links" id="nav-links">
+        <li><a href="#sobre" class="navbar__link"><span class="roll" data-i18n="nav.about">Sobre</span></a></li>
+        <li><a href="#projetos" class="navbar__link"><span class="roll" data-i18n="nav.projects">Projetos</span></a></li>
+        <li><a href="#jornada" class="navbar__link"><span class="roll" data-i18n="nav.journey">Jornada</span></a></li>
+        <li><a href="#contato" class="navbar__link"><span class="roll" data-i18n="nav.contact">Contato</span></a></li>
+        <!-- o sublinhado que desliza até o link ativo (posicionado pelo main.js) -->
+        <li class="navbar__indicator" id="nav-indicator" aria-hidden="true"></li>
+      </ul>
+
+      <div class="navbar__tools">
+        <button class="tool-btn" id="theme-toggle" type="button"
+                aria-label="Alternar tema claro/escuro" data-i18n-attr="aria-label:nav.themeLabel">
+          <!-- sol e lua: o CSS mostra um ou outro conforme o tema -->
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+        </button>
+        <button class="tool-btn tool-btn--text" id="lang-toggle" type="button"
+                aria-label="Mudar idioma para inglês" data-i18n-attr="aria-label:nav.langLabel">
+          <span class="roll" data-i18n="nav.langNext">EN</span>
+        </button>
+        <button class="navbar__toggle" id="nav-toggle" type="button"
+                aria-expanded="false" aria-controls="nav-links"
+                aria-label="Abrir menu" data-i18n-attr="aria-label:nav.menu">
+          <span class="navbar__toggle-bar" aria-hidden="true"></span>
+          <span class="navbar__toggle-bar" aria-hidden="true"></span>
+          <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== HERO ===== -->
+    <section id="inicio" class="hero">
+      <!-- mapa topográfico animado (desenhado pelo topo.js) -->
+      <canvas class="hero__topo" id="topo" aria-hidden="true"></canvas>
+
+      <div class="container hero__content">
+        <p class="hero__greeting intro" style="--i: 0" data-i18n="hero.greeting">Olá, eu sou</p>
+        <h1 class="hero__name intro" style="--i: 1" data-i18n="hero.name">Diego Olalla</h1>
+        <p class="hero__subtitle intro" style="--i: 2">
+          <span data-i18n="hero.prefix">eu construo</span>
+          <span class="typing" id="typing" data-words='["APIs","sistemas","regras de negócio","projetos em Java"]'>APIs</span>
+        </p>
+        <p class="hero__lead intro" style="--i: 3" data-i18n="hero.lead">Estudante de Engenharia de Software na FIAP, aprendendo back-end com Java e Spring Boot.</p>
+        <div class="hero__actions intro" style="--i: 4">
+          <a href="#projetos" class="btn btn--primary magnetic">
+            <span data-i18n="hero.ctaProjects">Ver projetos</span>
+            <svg class="btn__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#contato" class="btn btn--ghost magnetic">
+            <span data-i18n="hero.ctaContact">Falar comigo</span>
+          </a>
+        </div>
+        <p class="hero__status intro" style="--i: 5" aria-hidden="true">
+          <span class="status-dot"></span> GET /diego <span class="hero__status-ok">200 OK</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== SOBRE ===== -->
+    <section id="sobre" class="section" aria-labelledby="sobre-title">
+      <div class="container">
+        <h2 class="section__title reveal" id="sobre-title"><span class="route">GET</span><span class="section__path" data-i18n="sections.about">/sobre</span></h2>
+
+        <div class="about">
+          <figure class="about__photo reveal" id="about-photo">
+            <div class="about__photo-frame">
+              <img src="assets/foto.jpg" width="900" height="1200" loading="lazy"
+                   alt="Diego sorrindo na plateia do Talent Summit da FIAP" data-i18n-attr="alt:about.photoAlt">
+            </div>
+            <figcaption class="about__caption" data-i18n="about.caption">Talent Summit · FIAP</figcaption>
+          </figure>
+
+          <div class="about__text">
+            <p class="about__lede reveal" style="--delay: 0.05s" data-i18n="about.p1">Estudo Engenharia de Software e gosto mais do back-end, a parte que fica por trás da tela: APIs, regras de negócio e dados.</p>
+            <p class="reveal" style="--delay: 0.1s" data-i18n="about.p2">Ainda não tenho experiência profissional. Estou firmando a base em Java e estudando Spring Boot e SQL. Aprendo melhor construindo projetos, e o código deles está aqui.</p>
+
+            <div class="stack">
+              <div class="stack__group reveal" style="--delay: 0.15s">
+                <h3 class="stack__title" data-i18n="stack.focus">Foco</h3>
+                <ul class="stack__list">
+                  <li class="stack__item"><i class="devicon-java-plain colored" aria-hidden="true"></i><span>Java</span></li>
+                  <li class="stack__item"><i class="devicon-spring-original colored" aria-hidden="true"></i><span>Spring Boot</span><span class="tag tag--learning" data-i18n="stack.learning">estudando</span></li>
+                  <li class="stack__item"><i class="devicon-postgresql-plain colored" aria-hidden="true"></i><span>SQL</span><span class="tag tag--learning" data-i18n="stack.learning">estudando</span></li>
+                </ul>
+              </div>
+
+              <div class="stack__group reveal" style="--delay: 0.2s">
+                <h3 class="stack__title" data-i18n="stack.also">Também já usei</h3>
+                <ul class="stack__list">
+                  <li class="stack__item"><i class="devicon-python-plain colored" aria-hidden="true"></i><span>Python</span></li>
+                  <li class="stack__item"><i class="devicon-django-plain" aria-hidden="true"></i><span>Django</span></li>
+                  <li class="stack__item"><i class="devicon-html5-plain colored" aria-hidden="true"></i><span>HTML</span></li>
+                  <li class="stack__item"><i class="devicon-css3-plain colored" aria-hidden="true"></i><span>CSS</span></li>
+                  <li class="stack__item"><i class="devicon-javascript-plain colored" aria-hidden="true"></i><span>JavaScript</span></li>
+                  <li class="stack__item"><i class="devicon-git-plain colored" aria-hidden="true"></i><span>Git</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROJETOS ===== -->
+    <section id="projetos" class="section" aria-labelledby="projetos-title">
+      <div class="container">
+        <h2 class="section__title reveal" id="projetos-title"><span class="route">GET</span><span class="section__path" data-i18n="sections.projects">/projetos</span></h2>
+        <p class="section__intro reveal" data-i18n="projects.intro">Projetos que fiz estudando, com o que aprendi em cada um.</p>
+
+        <div class="projects">
+          <article class="card reveal" style="--delay: 0s">
+            <div class="card__head">
+              <span class="card__file">index.html</span>
+              <span class="card__lang"><span class="lang-dot lang-dot--css"></span>CSS</span>
+            </div>
+            <h3 class="card__title" data-i18n="projects.p1.title">personalProject</h3>
+            <p class="card__desc" data-i18n="projects.p1.desc">Meu primeiro portfólio. Fiz para treinar front-end, com a estrutura em HTML e o estilo em CSS.</p>
+            <div class="card__learned">
+              <strong data-i18n="projects.learned">O que aprendi</strong>
+              <p data-i18n="projects.p1.learned">Montar o layout de uma página do zero, organizar o CSS e publicar um site no GitHub Pages.</p>
+            </div>
+            <ul class="card__tags" aria-label="Tecnologias" data-i18n-attr="aria-label:projects.tagsLabel">
+              <li class="tag">HTML</li>
+              <li class="tag">CSS</li>
+              <li class="tag">GitHub Pages</li>
+            </ul>
+            <div class="card__links">
+              <a class="card__link" href="https://github.com/Diarooll/personalProject" target="_blank" rel="noopener">
+                <i class="devicon-github-original" aria-hidden="true"></i><span data-i18n="projects.code">Código</span>
+              </a>
+              <a class="card__link" href="https://diarooll.github.io/personalProject/" target="_blank" rel="noopener">
+                <span data-i18n="projects.demo">Ver online</span><svg class="card__link-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--delay: 0.08s">
+            <div class="card__head">
+              <span class="card__file">InterestService.java</span>
+              <span class="card__lang"><span class="lang-dot lang-dot--java"></span>Java</span>
+            </div>
+            <h3 class="card__title" data-i18n="projects.p2.title">JavaNelio</h3>
+            <p class="card__desc" data-i18n="projects.p2.desc">Exercícios do curso de Java do Nelio Alves. A interface InterestService calcula juros e tem duas implementações, BrazilInterestService e UsaInterestService.</p>
+            <div class="card__learned">
+              <strong data-i18n="projects.learned">O que aprendi</strong>
+              <p data-i18n="projects.p2.learned">Interfaces, polimorfismo e default methods. Cada país segue o mesmo contrato com a sua própria taxa.</p>
+            </div>
+            <ul class="card__tags" aria-label="Tecnologias" data-i18n-attr="aria-label:projects.tagsLabel">
+              <li class="tag">Java</li>
+              <li class="tag" data-i18n="projects.p2.tagOop">POO</li>
+              <li class="tag">Interfaces</li>
+            </ul>
+            <div class="card__links">
+              <a class="card__link" href="https://github.com/Diarooll/JavaNelio" target="_blank" rel="noopener">
+                <i class="devicon-github-original" aria-hidden="true"></i><span data-i18n="projects.code">Código</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="card reveal" style="--delay: 0.16s">
+            <div class="card__head">
+              <span class="card__file">main.js</span>
+              <span class="card__lang"><span class="lang-dot lang-dot--js"></span>JavaScript</span>
+            </div>
+            <h3 class="card__title" data-i18n="projects.p3.title">Este portfólio</h3>
+            <p class="card__desc" data-i18n="projects.p3.desc">Feito com HTML, CSS e JavaScript puros, sem framework. Tem versão em português e inglês, tema claro e escuro, e as animações diminuem para quem pede menos movimento no sistema.</p>
+            <div class="card__learned">
+              <strong data-i18n="projects.learned">O que aprendi</strong>
+              <p data-i18n="projects.p3.learned">IntersectionObserver, fetch de JSON, eventos customizados, Canvas e acessibilidade.</p>
+            </div>
+            <ul class="card__tags" aria-label="Tecnologias" data-i18n-attr="aria-label:projects.tagsLabel">
+              <li class="tag">HTML</li>
+              <li class="tag">CSS</li>
+              <li class="tag">JavaScript</li>
+            </ul>
+            <div class="card__links">
+              <a class="card__link" href="https://github.com/Diarooll" target="_blank" rel="noopener">
+                <i class="devicon-github-original" aria-hidden="true"></i><span data-i18n="projects.code">Código</span>
+              </a>
+            </div>
+          </article>
+
+          <a class="card card--wip reveal" style="--delay: 0.24s" href="https://github.com/Diarooll" target="_blank" rel="noopener">
+            <div class="card__head">
+              <span class="card__file">Application.java</span>
+              <span class="card__lang"><span class="lang-dot lang-dot--wip"></span>WIP</span>
+            </div>
+            <h3 class="card__title" data-i18n="projects.wip.title">Próximo projeto: uma API com Spring Boot</h3>
+            <p class="card__desc" data-i18n="projects.wip.desc">Estou estudando para construir a primeira API REST com Spring Boot e banco de dados. Acompanhe pelo GitHub.</p>
+            <span class="card__link card__link--cta">
+              <span data-i18n="projects.wip.link">Ver meu GitHub</span><svg class="card__link-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== JORNADA ===== -->
+    <section id="jornada" class="section" aria-labelledby="jornada-title">
+      <div class="container">
+        <h2 class="section__title reveal" id="jornada-title"><span class="route">GET</span><span class="section__path" data-i18n="sections.journey">/jornada</span></h2>
+        <p class="section__intro reveal" data-i18n="journey.intro">O caminho até aqui, em ordem.</p>
+
+        <!-- --progress (0 a 1) é atualizado pelo main.js conforme o scroll -->
+        <ol class="timeline" id="timeline">
+          <li class="timeline__item reveal">
+            <span class="timeline__date" data-i18n="journey.i1.date">Ciência da Computação · 1 período</span>
+            <h3 class="timeline__title" data-i18n="journey.i1.title">O começo</h3>
+            <p class="timeline__desc" data-i18n="journey.i1.desc">Cursei um período de Ciência da Computação e me apaixonei pela lógica e por construir projetos com linguagens como Java e Python.</p>
+          </li>
+          <li class="timeline__item reveal">
+            <span class="timeline__date" data-i18n="journey.i2.date">FIAP · cursando</span>
+            <h3 class="timeline__title" data-i18n="journey.i2.title">Engenharia de Software</h3>
+            <p class="timeline__desc" data-i18n="journey.i2.desc">Hoje estudo Engenharia de Software na FIAP, com foco em desenvolvimento back-end.</p>
+          </li>
+          <li class="timeline__item reveal">
+            <span class="timeline__date" data-i18n="journey.i3.date">em andamento</span>
+            <h3 class="timeline__title" data-i18n="journey.i3.title">Estrutura de Dados e Algoritmos</h3>
+            <p class="timeline__desc" data-i18n="journey.i3.desc">Faço cursos de estrutura de dados e algoritmos para ter uma base mais sólida e escrever código mais eficiente.</p>
+          </li>
+          <li class="timeline__item timeline__item--next reveal">
+            <span class="timeline__date" data-i18n="journey.next.date">próximo passo</span>
+            <h3 class="timeline__title" data-i18n="journey.next.title">Estágio ou vaga júnior em back-end</h3>
+            <p class="timeline__desc" data-i18n="journey.next.desc">Quero entrar num time em que eu aprenda com pessoas mais experientes e ajude no back-end com Java e Spring Boot.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== CONTATO ===== -->
+    <section id="contato" class="section section--contact" aria-labelledby="contato-title">
+      <div class="container">
+        <h2 class="section__title reveal" id="contato-title"><span class="route route--post">POST</span><span class="section__path" data-i18n="sections.contact">/contato</span></h2>
+        <p class="contact__text reveal" data-i18n="contact.text">Procuro estágio ou vaga júnior, e também gosto de conversar sobre back-end. O jeito mais rápido de falar comigo é por email.</p>
+
+        <div class="contact__email reveal">
+          <a class="contact__address" href="mailto:diego.aleola@gmail.com" id="email-address">diego.aleola@gmail.com</a>
+          <button class="btn btn--ghost btn--small" type="button" id="copy-email" data-email="diego.aleola@gmail.com">
+            <svg class="btn__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>
+            <span data-i18n="contact.copy">Copiar email</span>
+          </button>
+        </div>
+
+        <div class="contact__links reveal">
+          <a class="contact__btn magnetic" href="https://www.linkedin.com/in/diego-olalla/" target="_blank" rel="noopener">
+            <i class="devicon-linkedin-plain" aria-hidden="true"></i><span>LinkedIn</span>
+            <svg class="contact__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+          <a class="contact__btn magnetic" href="https://github.com/Diarooll" target="_blank" rel="noopener">
+            <i class="devicon-github-original" aria-hidden="true"></i><span>GitHub</span>
+            <svg class="contact__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+          <!-- TODO: colocar o currículo em assets/cv.pdf (versão sem telefone/endereço) -->
+          <a class="contact__btn contact__btn--cv magnetic" href="assets/cv.pdf" download>
+            <svg class="contact__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-i18n="contact.cv">Baixar currículo</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© <span id="year">2026</span> Diego Olalla · <span data-i18n="footer.text">Feito à mão com HTML, CSS e JavaScript</span></p>
+      <p class="footer__status"><code>HTTP/1.1 <span class="ok">200 OK</span></code></p>
+      <a href="#inicio" class="footer__top" aria-label="Voltar ao início" data-i18n-attr="aria-label:nav.home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Aviso flutuante ("Email copiado"); aria-live faz o leitor de tela anunciar -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scripts (defer: rodam depois que o HTML todo foi lido, na ordem abaixo) -->
+  <script src="js/i18n.js" defer></script>
+  <script src="js/typing.js" defer></script>
+  <script src="js/reveal.js" defer></script>
+  <script src="js/topo.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

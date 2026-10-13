@@ -1,0 +1,56 @@
+# ==========================================================
+# .gitignore: arquivos que o Git NÃO deve enviar para o GitHub
+# ==========================================================
+
+# ----- Dados sensíveis / segredos -----
+# Variáveis de ambiente (chaves de API, ex.: Formspree, se um dia usar)
+.env
+.env.*
+!.env.example
+
+# Chaves e certificados
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Arquivos de credenciais em geral
+*credentials*
+*secret*
+secrets/
+
+# Anotações pessoais que não devem ficar públicas
+private/
+notas-privadas/
+*.private.*
+
+# Versões do CV com dados pessoais completos (telefone, endereço, CPF...).
+# O cv.pdf público (para o botão "Baixar CV") PODE ser enviado;
+# guarde a versão completa com o nome cv-completo*.pdf.
+assets/cv-completo*
+
+# ----- Sistema operacional -----
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+
+# ----- Editores / IDEs -----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ----- Logs e temporários -----
+*.log
+tmp/
+.cache/
+
+# ----- Dependências (caso use npm no futuro) -----
+node_modules/
+
+# ----- Arquivos internos de trabalho -----
+# Contrato usado pelos agentes HTML/CSS/JS durante o desenvolvimento
+CONTRACT.md

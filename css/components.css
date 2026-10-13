@@ -1,0 +1,1552 @@
+/* ==========================================================
+   COMPONENTS: cada pedaço da página, de cima para baixo.
+   Mobile first: o estilo "solto" é o do celular; os
+   @media (min-width) ajustam para telas maiores.
+   @media (hover: hover) = só aplica efeitos de hover em
+   aparelhos com mouse (no celular não existe "passar por cima").
+   ========================================================== */
+
+/* ==========================================================
+   BARRA DE PROGRESSO DE LEITURA
+   O main.js atualiza --p (0 a 1) conforme a rolagem.
+   ========================================================== */
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 120;
+  pointer-events: none;
+}
+
+.progress__bar {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left;
+}
+
+/* ==========================================================
+   NAVBAR
+   ========================================================== */
+.navbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--navbar-height);
+  z-index: 100;
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--dur) ease, border-color var(--dur) ease;
+}
+
+/* .navbar--scrolled é colocada pelo main.js quando a página rola.
+   :has() = "a navbar que CONTÉM o menu aberto": no topo da página a
+   navbar é transparente, mas com o menu do celular aberto ela precisa
+   de fundo, senão o painel parece "solto" em cima do hero. */
+.navbar--scrolled,
+.navbar:has(.navbar__links--open) {
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  border-bottom-color: var(--line);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.navbar__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+/* ----- Avatar (sua foto no lugar do "diego.dev") ----- */
+.navbar__avatar {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  padding: 2px;
+  border: 1.5px solid var(--line);
+  transition: transform var(--dur) var(--ease-spring), border-color var(--dur-fast);
+}
+
+.navbar__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* O foco pelo teclado ganha o mesmo efeito do hover */
+.navbar__avatar:focus-visible {
+  border-color: var(--accent);
+  transform: rotate(-8deg) scale(1.08);
+}
+
+@media (hover: hover) {
+  .navbar__avatar:hover {
+    border-color: var(--accent);
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+/* ----- Links ----- */
+.navbar__links {
+  /* celular: painel que desce abaixo da navbar */
+  position: absolute;
+  top: var(--navbar-height);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-xs) 20px var(--space-sm);
+  /* se a tela for muito baixa (celular deitado), o painel rola */
+  max-height: calc(100svh - var(--navbar-height));
+  overflow-y: auto;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  /* fechado: invisível e fora da ordem do Tab.
+     O visibility espera a animação acabar (delay) antes de esconder. */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity var(--dur-fast), transform var(--dur-fast) var(--ease-out), visibility 0s linear var(--dur-fast);
+}
+
+.navbar__links--open {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-fast), transform var(--dur-fast) var(--ease-out);
+}
+
+.navbar__link {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.7rem 0;
+  font-size: var(--text-lg);
+  color: var(--muted);
+  transition: color var(--dur-fast);
+}
+
+/* No celular, uma linha fina separa os itens do menu.
+   O último <li> é o indicador e o penúltimo é "Contato": nenhum
+   dos dois leva a linha. Fica num @media max-width para não
+   precisar "desfazer" no desktop. */
+@media (max-width: 767px) {
+  .navbar__links > li:not(:last-child, :nth-last-child(2)) .navbar__link {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+/* No celular não existe o sublinhado deslizante; o link ativo ganha
+   um tracinho verde à esquerda, que "cresce" quando fica ativo. */
+.navbar__link::before {
+  content: "";
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: width var(--dur) var(--ease-out);
+}
+
+.navbar__link--active {
+  color: var(--fg);
+}
+
+.navbar__link--active::before {
+  width: 0.9em;
+}
+
+.navbar__link:focus-visible {
+  color: var(--fg);
+}
+
+@media (hover: hover) {
+  .navbar__link:hover {
+    color: var(--fg);
+  }
+
+  .navbar__link:hover::before {
+    width: 0.9em;
+  }
+}
+
+.navbar__indicator {
+  display: none; /* o sublinhado deslizante só existe no desktop */
+}
+
+/* ----- Botões da direita (tema, idioma, menu) ----- */
+.navbar__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.tool-btn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  transition:
+    color var(--dur-fast),
+    border-color var(--dur-fast),
+    background-color var(--dur-fast),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.tool-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.tool-btn--text {
+  width: auto;
+  min-width: 40px;
+  padding-inline: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+/* inline-block: transform não funciona em elemento inline */
+.tool-btn--text .roll {
+  display: inline-block;
+}
+
+/* Sol no tema escuro (para ir ao claro), lua no claro (tokens.css troca) */
+.icon-sun { display: var(--icon-sun); }
+.icon-moon { display: var(--icon-moon); }
+
+.tool-btn:active {
+  transform: scale(0.92);
+}
+
+/* Teclado: mesmo visual do hover (sem a animação, que é só um "extra") */
+.tool-btn:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (hover: hover) {
+  .tool-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .tool-btn:hover .icon-sun {
+    transform: rotate(90deg);
+  }
+
+  .tool-btn:hover .icon-moon {
+    transform: rotate(-20deg) scale(1.1);
+  }
+
+  .tool-btn--text:hover .roll {
+    animation: flip 0.5s var(--ease-out);
+  }
+}
+
+/* ----- Hambúrguer: 3 barrinhas que viram um X ----- */
+.navbar__toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end; /* as barras se alinham à direita (para o hover) */
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  color: var(--fg); /* as barras usam currentColor */
+  transition: color var(--dur-fast);
+}
+
+.navbar__toggle-bar {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast), width var(--dur) var(--ease-out);
+}
+
+/* Matemática do X: barra de 1.5px + gap de 5px = 6.5px entre os centros.
+   A 1ª desce 6.5px e a 3ª sobe 6.5px: as duas se cruzam no meio. */
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.navbar__toggle:focus-visible {
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  /* fechado: a barra do meio encolhe, como um "menu" que se abre */
+  .navbar__toggle:hover {
+    color: var(--accent);
+  }
+
+  .navbar__toggle[aria-expanded="false"]:hover .navbar__toggle-bar:nth-child(2) {
+    width: 60%;
+  }
+}
+
+/* ----- Desktop: links em linha, sem hambúrguer ----- */
+@media (min-width: 768px) {
+  .navbar__toggle {
+    display: none;
+  }
+
+  .navbar__links {
+    position: relative; /* referência do --x do indicador (offsetLeft) */
+    top: auto;
+    flex-direction: row;
+    gap: var(--space-md);
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    margin-left: auto;
+    margin-right: var(--space-sm);
+  }
+
+  .navbar__link {
+    display: block;
+    padding: 0.3rem 0;
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  /* no desktop quem marca o ativo é o sublinhado deslizante */
+  .navbar__link::before {
+    display: none;
+  }
+
+  /* Sublinhado que desliza: o main.js coloca --x, --w e --o */
+  .navbar__indicator {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 2px;
+    width: var(--w, 0);
+    background: var(--accent);
+    border-radius: 2px;
+    transform: translateX(var(--x, 0));
+    opacity: var(--o, 0);
+    transition: transform var(--dur) var(--ease-out), width var(--dur) var(--ease-out), opacity var(--dur-fast);
+    pointer-events: none;
+  }
+}
+
+/* Efeito "roll": o texto sobe e uma cópia verde entra por baixo.
+   Truque: o text-shadow desenha uma cópia do texto deslocada para
+   baixo, e o link esconde o que vaza (overflow: hidden).
+   --roll-h = altura TOTAL do link (texto + padding). A cópia fica
+   exatamente uma altura abaixo: parada, ela está 100% escondida
+   (se fosse só 1.5em, o topo das letras altas "vazava" no padding);
+   no hover, o texto sobe essa mesma altura e a cópia cai no lugar. */
+@media (min-width: 768px) {
+  .navbar__link {
+    --roll-h: calc(1.5em + 0.6rem);
+    overflow: hidden;
+    height: var(--roll-h);
+    line-height: 1.5;
+  }
+
+  .navbar__link .roll {
+    display: block;
+    text-shadow: 0 var(--roll-h) 0 var(--accent);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .navbar__link:focus-visible .roll {
+    transform: translateY(calc(var(--roll-h) * -1));
+  }
+}
+
+@media (min-width: 768px) and (hover: hover) {
+  .navbar__link:hover .roll {
+    transform: translateY(calc(var(--roll-h) * -1));
+  }
+}
+
+/* ==========================================================
+   BOTÕES
+   O ::before é uma "tinta" que se espalha da esquerda para a
+   direita no hover (scaleX de 0 até 1).
+   .magnetic: o main.js puxa o botão de leve na direção do mouse
+   usando --tx e --ty.
+   Por que `translate` e `scale` separados, e não tudo em `transform`?
+   Uma propriedade só guarda UM valor: se o :active escrevesse
+   transform: scale(), ele apagaria o deslocamento do ímã (e vice-versa).
+   Com propriedades independentes, o navegador combina as duas sozinho.
+   ========================================================== */
+.btn {
+  position: relative;
+  isolation: isolate; /* o ::before com z-index -1 fica dentro do botão */
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  font-size: var(--text-sm);
+  border: 1px solid transparent;
+  transition:
+    color var(--dur) var(--ease-out),
+    border-color var(--dur-fast),
+    translate var(--dur) var(--ease-out),
+    scale var(--dur-fast) var(--ease-out);
+}
+
+/* O ímã: o main.js atualiza --tx/--ty a cada movimento do mouse e a
+   transição (no .btn / .contact__btn) suaviza o "puxão". */
+.magnetic {
+  translate: var(--tx, 0) var(--ty, 0);
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: scaleX(0);
+  /* parado, a origem fica à DIREITA: ao tirar o mouse, a tinta
+     "sai" pela direita em vez de voltar pelo mesmo caminho */
+  transform-origin: right;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+/* com hover/foco, a origem vai para a esquerda: a tinta entra por lá */
+.btn:focus-visible::before,
+.contact__btn:focus-visible::before {
+  transform-origin: left;
+}
+
+@media (hover: hover) {
+  .btn:hover::before,
+  .contact__btn:hover::before {
+    transform-origin: left;
+  }
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn--primary::before {
+  background: var(--fg);
+}
+
+.btn--ghost {
+  border-color: var(--line);
+  color: var(--fg);
+}
+
+.btn--ghost::before {
+  background: var(--accent);
+}
+
+.btn--small {
+  padding: 0.55rem 1rem;
+  font-size: var(--text-xs);
+}
+
+.btn__arrow,
+.btn__icon {
+  width: 1.1em;
+  height: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.btn:active {
+  scale: 0.96;
+}
+
+/* Teclado (:focus-visible): o mesmo preenchimento do hover */
+.btn:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.btn--primary:focus-visible {
+  color: var(--bg);
+}
+
+.btn--ghost:focus-visible {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+
+@media (hover: hover) {
+  .btn:hover::before {
+    transform: scaleX(1);
+  }
+
+  .btn--primary:hover {
+    color: var(--bg);
+  }
+
+  .btn--ghost:hover {
+    color: var(--accent-ink);
+    border-color: var(--accent);
+  }
+
+  .btn:hover .btn__arrow {
+    transform: translateX(4px);
+  }
+
+  .btn:hover .btn__icon {
+    transform: rotate(-8deg) scale(1.1);
+  }
+}
+
+/* ==========================================================
+   HERO
+   ========================================================== */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: min(92svh, 860px);
+  padding-block: calc(var(--navbar-height) + var(--space-md)) var(--space-lg);
+}
+
+/* O canvas do mapa topográfico ocupa o hero inteiro, atrás do texto */
+.hero__topo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  /* Some suavemente nas bordas para não "cortar" seco.
+     São DUAS máscaras combinadas (intersect = só aparece onde as duas
+     deixam):
+     1) linear vertical: apaga o topo (atrás da navbar) e, principalmente,
+        a base, que encosta na linha da seção "Sobre". Só a radial não
+        bastava: na base ela ainda deixava ~40% das linhas visíveis.
+     2) radial: concentra as curvas à direita, longe do texto.
+     No Safari antigo o nome é -webkit-mask-composite: source-in. */
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, #000 18%, #000 62%, transparent 100%),
+    radial-gradient(ellipse 85% 90% at 72% 45%, #000 35%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, transparent 0, #000 18%, #000 62%, transparent 100%),
+    radial-gradient(ellipse 85% 90% at 72% 45%, #000 35%, transparent 100%);
+  mask-composite: intersect;
+  pointer-events: none; /* o mouse é lido no .hero pelo topo.js */
+}
+
+/* Desktop: uma 3ª máscara, horizontal, deixa as curvas a ~45% de força
+   atrás do nome e do texto (lado esquerdo) e com força total à direita.
+   Elas ficam mais fracas, mas não somem: o mapa continua "inteiro". */
+@media (min-width: 768px) {
+  .hero__topo {
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0, #000 18%, #000 62%, transparent 100%),
+      radial-gradient(ellipse 85% 90% at 72% 45%, #000 35%, transparent 100%),
+      linear-gradient(to right, rgba(0, 0, 0, 0.45) 0, rgba(0, 0, 0, 0.45) 38%, #000 58%);
+    mask-image:
+      linear-gradient(to bottom, transparent 0, #000 18%, #000 62%, transparent 100%),
+      radial-gradient(ellipse 85% 90% at 72% 45%, #000 35%, transparent 100%),
+      linear-gradient(to right, rgba(0, 0, 0, 0.45) 0, rgba(0, 0, 0, 0.45) 38%, #000 58%);
+  }
+}
+
+/* No celular o texto ocupa a largura toda: centralizamos a radial e
+   deixamos as linhas um pouco mais discretas atrás das palavras. */
+@media (max-width: 767px) {
+  .hero__topo {
+    opacity: 0.8;
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0, #000 18%, #000 62%, transparent 100%),
+      radial-gradient(ellipse 100% 80% at 60% 45%, #000 30%, transparent 100%);
+    mask-image:
+      linear-gradient(to bottom, transparent 0, #000 18%, #000 62%, transparent 100%),
+      radial-gradient(ellipse 100% 80% at 60% 45%, #000 30%, transparent 100%);
+  }
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.hero__greeting {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.hero__name {
+  font-size: var(--text-hero);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-variation-settings: "SOFT" 100, "opsz" 144;
+  /* Fraunces é uma fonte "variável": o peso pode animar suavemente */
+  transition: font-variation-settings var(--dur-slow) var(--ease-out), font-weight var(--dur-slow) var(--ease-out), letter-spacing var(--dur-slow) var(--ease-out);
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .hero__name:hover {
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    font-variation-settings: "SOFT" 50, "opsz" 144;
+  }
+}
+
+.hero__subtitle {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  font-variation-settings: "SOFT" 100, "opsz" 48;
+  color: var(--muted);
+}
+
+.typing {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* cursor em bloco, estilo terminal (pisca via animations.css) */
+.typing::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 0.12em;
+  vertical-align: -0.15em;
+  background: var(--accent);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+.hero__lead {
+  max-width: 46ch;
+  color: var(--muted);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-sm);
+  margin-top: var(--space-xs);
+}
+
+.hero__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.hero__status-ok {
+  color: var(--accent);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+/* ==========================================================
+   SOBRE
+   ========================================================== */
+.about {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+/* ----- Foto com inclinação 3D (main.js coloca --rx, --ry, --gx, --gy) ----- */
+.about__photo {
+  max-width: 380px;
+  perspective: 900px;
+}
+
+.about__photo-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  aspect-ratio: 3 / 4; /* mesma proporção da foto: ela aparece inteira */
+  max-width: 100%;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform var(--dur) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur);
+  will-change: transform;
+}
+
+.about__photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform var(--dur-slow) var(--ease-out), filter var(--dur);
+  filter: saturate(0.85);
+}
+
+/* reflexo de luz que segue o mouse */
+.about__photo-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.18), transparent 55%);
+  opacity: 0;
+  transition: opacity var(--dur);
+  pointer-events: none;
+}
+
+.about__caption {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+/* um "pino" de mapa antes da legenda */
+.about__caption::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--warm);
+  transition: background-color var(--dur-fast), transform var(--dur) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .about__photo:hover .about__photo-frame {
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+
+  .about__photo:hover .about__photo-frame img {
+    transform: scale(1.05);
+    filter: saturate(1);
+  }
+
+  .about__photo:hover .about__photo-frame::after {
+    opacity: 1;
+  }
+
+  .about__photo:hover .about__caption::before {
+    background: var(--warm);
+    transform: scale(1.4);
+  }
+}
+
+.about__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-width: 0;
+  max-width: 62ch;
+}
+
+.about__lede {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: 1.45;
+  font-variation-settings: "SOFT" 100, "opsz" 32;
+}
+
+.about__text > p:not(.about__lede) {
+  color: var(--muted);
+}
+
+/* ----- Stack ----- */
+.stack {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.stack__title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: var(--space-xs);
+}
+
+.stack__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.stack__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  cursor: default;
+  transition: transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), background-color var(--dur-fast);
+}
+
+/* ícones começam monocromáticos e ganham cor no hover */
+.stack__item i {
+  font-size: 1.15rem;
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition: filter var(--dur), opacity var(--dur), transform var(--dur) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .stack__item:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+
+  .stack__item:hover i {
+    filter: none;
+    opacity: 1;
+    transform: rotate(-10deg) scale(1.2);
+  }
+}
+
+/* No celular (sem hover) os ícones já aparecem coloridos */
+@media (hover: none) {
+  .stack__item i {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* ----- Tags ----- */
+.tag {
+  display: inline-block;
+  padding: 0.15em 0.55em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--muted);
+  transition: color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.tag--learning {
+  border-style: dashed;
+  border-color: var(--warm);
+  color: var(--warm);
+  font-size: 0.7rem;
+}
+
+@media (min-width: 900px) {
+  .about {
+    grid-template-columns: minmax(260px, 5fr) 7fr;
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  /* Os grupos ficam um embaixo do outro, cada lista ocupando a largura
+     toda. (Com "auto 1fr", o grupo "Foco" pegava a largura do conteúdo e o
+     "Também já usei" ficava espremido numa coluna, um item por linha,
+     deixando o Sobre bem mais alto que a foto.) */
+  .stack {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}
+
+/* ==========================================================
+   PROJETOS
+   ========================================================== */
+.projects {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .projects {
+    grid-template-columns: repeat(2, 1fr); /* 4 cards = 2x2, ninguém sozinho */
+    gap: var(--space-md);
+  }
+}
+
+/* O main.js coloca --mx / --my (posição do mouse dentro do card)
+   e o ::before desenha uma "lanterna" de luz nesse ponto. */
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-width: 0;
+  transition: transform var(--dur) var(--ease-out), border-color var(--dur), box-shadow var(--dur);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%);
+  opacity: 0;
+  transition: opacity var(--dur);
+}
+
+.card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--muted);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px dashed var(--line);
+}
+
+.card__file {
+  transition: color var(--dur-fast);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  flex-shrink: 0;
+}
+
+/* bolinhas com as cores que o GitHub usa para cada linguagem */
+.lang-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.lang-dot--java { background: #B07219; }
+.lang-dot--css { background: #663399; }
+.lang-dot--js { background: #F1E05A; }
+.lang-dot--wip { border: 1.5px dashed var(--warm); }
+
+.card__title {
+  font-size: var(--text-xl);
+  transition: color var(--dur-fast);
+  overflow-wrap: anywhere;
+}
+
+.card__desc {
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.card__learned {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: var(--text-sm);
+}
+
+.card__learned strong {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--warm);
+}
+
+.card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-top: auto; /* empurra os links para o fim do card */
+  padding-top: var(--space-xs);
+}
+
+/* Link com sublinhado que "cresce" da esquerda (background-size) */
+.card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+  padding-bottom: 2px;
+  transition: background-size var(--dur) var(--ease-out), color var(--dur-fast);
+}
+
+.card__link i {
+  font-size: 1.05rem;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.card__link-arrow {
+  width: 0.95em;
+  height: 0.95em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+/* Card "em construção": tracejado e transparente */
+.card--wip {
+  background: transparent;
+  border-style: dashed;
+}
+
+.card__link--cta {
+  margin-top: auto;
+  color: var(--accent);
+  align-self: flex-start;
+}
+
+/* Teclado: quando um link DENTRO do card recebe foco (:has), o card
+   inteiro reage como no hover. O card WIP é ele mesmo um link. */
+.card:has(:focus-visible),
+.card--wip:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+}
+
+.card--wip:focus-visible {
+  border-style: solid;
+}
+
+.card--wip:focus-visible .card__title {
+  color: var(--accent);
+}
+
+.card__link:focus-visible,
+.card--wip:focus-visible .card__link--cta {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+
+.card__link:focus-visible .card__link-arrow,
+.card--wip:focus-visible .card__link-arrow {
+  transform: translate(3px, -3px);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+    box-shadow: var(--shadow);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card:hover .card__title {
+    color: var(--accent);
+  }
+
+  .card:hover .card__file {
+    color: var(--fg);
+  }
+
+  .card__link:hover,
+  .card--wip:hover .card__link--cta {
+    color: var(--accent);
+    background-size: 100% 1px;
+  }
+
+  .card__link:hover .card__link-arrow,
+  .card--wip:hover .card__link-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .card__link:hover i {
+    transform: rotate(-10deg) scale(1.12);
+  }
+
+  .tag:hover {
+    color: var(--fg);
+    border-color: var(--accent);
+  }
+
+  .card--wip:hover {
+    border-style: solid;
+  }
+}
+
+/* ==========================================================
+   JORNADA (timeline)
+   A linha cinza é o caminho todo; a linha verde por cima
+   "se desenha" conforme o scroll (--progress, de 0 a 1).
+
+   GEOMETRIA (tudo em variáveis para não "desalinhar" se algo mudar):
+   - a linha tem 2px e o CENTRO dela fica em --tl-line-x;
+   - cada item tem padding lateral --tl-item-pad e margem negativa
+     do mesmo tamanho (o fundo do hover "abraça" o texto sem empurrá-lo);
+   - por isso a bolinha (::before do item) precisa descontar essa
+     diferença para cair exatamente em cima da linha:
+       left = linha - meia bolinha - padding da timeline + padding do item
+   - --tl-dot-y é a altura do centro da bolinha a partir do topo do
+     item: o padding de cima + meia linha da data (line-height 1.6).
+     A linha começa nesse ponto, ou seja, no centro da 1ª bolinha.
+   ========================================================== */
+.timeline {
+  --tl-pad: 2.2rem;          /* espaço à esquerda reservado para a linha */
+  --tl-line-x: 8px;          /* centro da linha */
+  --tl-dot: 14px;            /* diâmetro da bolinha */
+  --tl-item-pad: var(--space-sm);
+  --tl-dot-y: calc(var(--space-xs) + var(--text-xs) * 0.8);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding-left: var(--tl-pad);
+  max-width: 720px;
+}
+
+.timeline::before,
+.timeline::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--tl-line-x) - 1px); /* 1px = metade da largura (2px) */
+  top: var(--tl-dot-y);
+  bottom: 0;
+  width: 2px;
+  border-radius: 2px;
+  /* a linha passa da última bolinha ("próximo passo") e vai sumindo:
+     o caminho continua, só ainda não foi percorrido */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+}
+
+.timeline::before {
+  background: var(--line);
+}
+
+.timeline::after {
+  background: var(--accent);
+  transform: scaleY(var(--progress, 0));
+  transform-origin: top;
+}
+
+.timeline__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: var(--space-xs) var(--tl-item-pad) var(--space-sm);
+  margin-left: calc(var(--tl-item-pad) * -1);
+  border-radius: var(--radius);
+  /* a transição de hover deste item está em animations.css, junto
+     com a do .reveal (veja o comentário lá) */
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+/* a bolinha de cada etapa */
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--tl-line-x) - var(--tl-dot) / 2 - var(--tl-pad) + var(--tl-item-pad));
+  top: calc(var(--tl-dot-y) - var(--tl-dot) / 2);
+  width: var(--tl-dot);
+  height: var(--tl-dot);
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--bg); /* "tampa" a linha atrás da bolinha */
+  transition:
+    border-color var(--dur),
+    background-color var(--dur),
+    box-shadow var(--dur),
+    transform var(--dur) var(--ease-spring);
+}
+
+/* .is-reached: a linha verde já passou por esta etapa (main.js).
+   A bolinha fica verde e "cheia", com um anel da cor do fundo. */
+.timeline__item.is-reached::before {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--bg);
+}
+
+.timeline__date {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.6; /* usado no cálculo de --tl-dot-y */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--warm);
+  transition: transform var(--dur) var(--ease-out), color var(--dur-fast);
+}
+
+.timeline__title {
+  font-size: var(--text-lg);
+  transition: transform var(--dur) var(--ease-out), color var(--dur-fast);
+}
+
+.timeline__desc {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  max-width: 58ch;
+}
+
+/* Próximo passo: bolinha tracejada pulsando (ainda não chegamos lá).
+   Mesmo "alcançada" pela linha, ela continua cor de folha seca e vazia. */
+.timeline__item--next::before,
+.timeline__item--next.is-reached::before {
+  border-style: dashed;
+  border-color: var(--warm);
+  background: var(--bg);
+  animation: pulse-ring 2.6s ease-out infinite;
+}
+
+.timeline__item--next .timeline__title {
+  color: var(--muted);
+}
+
+@media (hover: hover) {
+  .timeline__item:hover {
+    background: var(--surface);
+  }
+
+  .timeline__item:hover::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: scale(1.3);
+  }
+
+  .timeline__item--next:hover::before {
+    background: var(--warm);
+    border-color: var(--warm);
+  }
+
+  .timeline__item:hover .timeline__date {
+    transform: translateX(6px);
+  }
+
+  .timeline__item:hover .timeline__title {
+    transform: translateX(3px);
+  }
+
+  .timeline__item--next:hover .timeline__title {
+    color: var(--fg);
+  }
+}
+
+/* ==========================================================
+   CONTATO
+   ========================================================== */
+.section--contact {
+  background: var(--bg-soft);
+}
+
+.contact__text {
+  max-width: 56ch;
+  color: var(--muted);
+  margin-bottom: var(--space-md);
+}
+
+.contact__email {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+/* email grande, com sublinhado que cresce no hover */
+.contact__address {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  /* em 375px, o --text-2xl (32px) fazia o email quebrar no meio
+     ("diego.aleola@gm | ail.com"); aqui ele encolhe com a tela e só
+     chega ao tamanho cheio em telas maiores */
+  font-size: clamp(1.3rem, 5.6vw, 3rem);
+  font-weight: 500;
+  font-variation-settings: "SOFT" 100, "opsz" 72;
+  background: linear-gradient(var(--accent), var(--accent)) left 100% / 0 2px no-repeat;
+  padding-bottom: 4px;
+  transition: background-size var(--dur) var(--ease-out), color var(--dur-fast);
+}
+
+.contact__address:focus-visible {
+  color: var(--accent);
+  background-size: 100% 2px;
+}
+
+@media (hover: hover) {
+  .contact__address:hover {
+    color: var(--accent);
+    background-size: 100% 2px;
+  }
+}
+
+.contact__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.contact__btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition:
+    color var(--dur) var(--ease-out),
+    border-color var(--dur-fast),
+    translate var(--dur) var(--ease-out),
+    scale var(--dur-fast) var(--ease-out);
+}
+
+/* a "tinta" que preenche o botão da esquerda para a direita */
+.contact__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right; /* mesmo truque do .btn: sai pela direita */
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.contact__btn i {
+  font-size: 1.3rem;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.contact__icon,
+.contact__arrow {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur) var(--ease-spring);
+}
+
+.contact__arrow {
+  margin-left: auto;
+}
+
+.contact__btn--cv {
+  border-style: dashed;
+}
+
+/* scale separado do translate do .magnetic (explicação nos BOTÕES) */
+.contact__btn:active {
+  scale: 0.97;
+}
+
+/* Teclado: mesmo preenchimento e mesma seta do hover */
+.contact__btn:focus-visible {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  border-style: solid;
+}
+
+.contact__btn:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.contact__btn:focus-visible .contact__arrow {
+  transform: translate(3px, -3px);
+}
+
+@media (hover: hover) {
+  .contact__btn:hover {
+    color: var(--accent-ink);
+    border-color: var(--accent);
+    border-style: solid; /* o do currículo deixa de ser tracejado */
+  }
+
+  .contact__btn:hover::before {
+    transform: scaleX(1);
+  }
+
+  .contact__btn:hover i {
+    transform: rotate(-12deg) scale(1.15);
+  }
+
+  .contact__btn:hover .contact__arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .contact__btn:hover .contact__icon {
+    animation: nudge-down 0.8s var(--ease-out) infinite;
+  }
+}
+
+@media (min-width: 768px) {
+  .contact__links {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .contact__btn {
+    flex: 1 1 200px;
+  }
+}
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+.footer {
+  padding-block: var(--space-md);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-xs) var(--space-md);
+}
+
+.footer__status {
+  font-size: var(--text-xs);
+}
+
+.footer .ok {
+  color: var(--accent);
+}
+
+.footer__top {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: border-color var(--dur-fast), color var(--dur-fast), background-color var(--dur-fast);
+}
+
+.footer__top svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.footer__top:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (hover: hover) {
+  .footer__top:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+  }
+
+  .footer__top:hover svg {
+    animation: nudge-up 0.8s var(--ease-out) infinite;
+  }
+}
+
+/* ==========================================================
+   TOAST ("Email copiado")
+   ========================================================== */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 150;
+  max-width: calc(100% - 40px);
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: var(--fg);
+  color: var(--bg);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  /* escondido: abaixo da tela E transparente (a sombra não "espia"
+     na borda, e o toast vazio do começo não aparece) */
+  opacity: 0;
+  transform: translate(-50%, 180%);
+  transition: transform var(--dur) var(--ease-spring), opacity var(--dur-fast);
+  pointer-events: none;
+}
+
+.toast--show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

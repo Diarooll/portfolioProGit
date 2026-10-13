@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Favicon: 3 curvas de nível (como no mapa topográfico do hero) -->
+  <rect width="32" height="32" rx="7" fill="#141A16"/>
+  <g fill="none" stroke="#B5C77A" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke-width="1.6" d="M16 4.5c5.6-.3 11 3.4 11.3 9.2.3 5.9-3.6 12.9-10.4 13.6C10.3 28 4.6 23.6 4.7 16.9 4.8 10 9.9 4.8 16 4.5Z"/>
+    <path stroke-width="1.6" d="M16.4 9.4c3.6-.1 6.6 2.6 6.4 6.3-.2 3.8-2.9 7.4-6.8 7.4-3.7 0-6.6-2.9-6.4-6.8.2-3.9 3.1-6.8 6.8-6.9Z"/>
+    <path stroke-width="1.8" d="M16.3 13.7c1.5 0 2.5 1.1 2.4 2.5-.1 1.5-1.2 2.6-2.6 2.6-1.5 0-2.4-1.1-2.3-2.5.1-1.5 1.1-2.6 2.5-2.6Z"/>
+  </g>
+</svg>

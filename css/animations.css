@@ -1,0 +1,167 @@
+/* ==========================================================
+   ANIMATIONS: keyframes, entrada do hero e reveal ao rolar.
+   Regra de ouro: tudo aqui é desligado em
+   @media (prefers-reduced-motion: reduce), no fim do arquivo.
+   ========================================================== */
+
+/* ----- Keyframes ----- */
+
+/* cursor do typing piscando */
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* bolinha "online" do status: um anel que se expande e some */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+  80%, 100% { box-shadow: 0 0 0 9px transparent; }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--warm) 50%, transparent); }
+  80%, 100% { box-shadow: 0 0 0 10px transparent; }
+}
+
+/* entrada do hero: sobe um pouco e aparece */
+@keyframes intro-up {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* botão de idioma: o texto "vira" como uma placa.
+   perspective() dá profundidade: sem ela o giro em X parece só um
+   "achatamento" do texto. */
+@keyframes flip {
+  0% { transform: perspective(120px) rotateX(0); }
+  50% { transform: perspective(120px) rotateX(90deg); }
+  100% { transform: perspective(120px) rotateX(0); }
+}
+
+/* setinhas que "chamam" o clique */
+@keyframes nudge-up {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes nudge-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* ==========================================================
+   ENTRADA DO HERO (quando a página abre)
+   Cada .intro tem --i (0, 1, 2...) no HTML: o atraso é --i x 90ms,
+   então os elementos entram um depois do outro (stagger).
+   ========================================================== */
+html.js .intro {
+  animation: intro-up 0.9s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+}
+
+/* ==========================================================
+   REVEAL AO ROLAR
+   O CSS só esconde quando existe html.js (se o JS falhar, tudo
+   continua visível). O reveal.js adiciona .reveal--visible quando
+   o elemento entra na tela.
+   Usamos a propriedade `translate` (e não `transform`) para não
+   brigar com os transforms de hover dos cards.
+   ========================================================== */
+html.js .reveal {
+  opacity: 0;
+  translate: 0 28px;
+  transition:
+    opacity var(--dur-slow) var(--ease-out) var(--delay, 0s),
+    translate var(--dur-slow) var(--ease-out) var(--delay, 0s);
+}
+
+html.js .reveal.reveal--visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* CUIDADO COM A ESPECIFICIDADE:
+   `html.js .reveal` (1 classe + 1 classe + 1 tag) vence o `.card`
+   de components.css (1 classe). Então o `transition` daqui APAGARIA
+   as transições de hover do card e da timeline, e o hover ficaria
+   "seco". A solução é repetir aqui a lista completa: entrada
+   (opacity/translate, com --delay) + hover (sem --delay, senão o
+   hover demoraria para responder).
+   Se mudar a transição do .card ou do .timeline__item em
+   components.css, mude aqui também. */
+html.js .card.reveal {
+  transition:
+    opacity var(--dur-slow) var(--ease-out) var(--delay, 0s),
+    translate var(--dur-slow) var(--ease-out) var(--delay, 0s),
+    transform var(--dur) var(--ease-out),
+    border-color var(--dur),
+    box-shadow var(--dur);
+}
+
+html.js .timeline__item.reveal {
+  translate: -16px 0; /* a timeline entra vindo da esquerda */
+  transition:
+    opacity var(--dur-slow) var(--ease-out) var(--delay, 0s),
+    translate var(--dur-slow) var(--ease-out) var(--delay, 0s),
+    background-color var(--dur) var(--ease-out);
+}
+
+html.js .timeline__item.reveal.reveal--visible {
+  translate: 0 0;
+}
+
+/* A foto entra com um leve zoom além da subida */
+html.js .about__photo.reveal {
+  scale: 0.96;
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    translate var(--dur-slow) var(--ease-out),
+    scale var(--dur-slow) var(--ease-out);
+}
+
+html.js .about__photo.reveal.reveal--visible {
+  scale: 1;
+}
+
+/* ==========================================================
+   MOVIMENTO REDUZIDO
+   Quem ativa "reduzir movimento" no sistema vê tudo parado e
+   já visível. O conteúdo é o mesmo, só sem animação.
+   ========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Os seletores repetem os de cima (.timeline__item.reveal,
+     .about__photo.reveal) para ter a MESMA força: senão o
+     translate -16px e o scale 0.96 deles venceriam este reset. */
+  html.js .intro,
+  html.js .reveal,
+  html.js .timeline__item.reveal,
+  html.js .about__photo.reveal {
+    opacity: 1;
+    translate: none;
+    scale: none;
+    animation: none;
+  }
+
+  /* o ímã do .magnetic não deve mexer nada */
+  .magnetic {
+    translate: none;
+  }
+
+  .typing::after {
+    animation: none;
+  }
+}
