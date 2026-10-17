@@ -1463,6 +1463,11 @@
   opacity: 0.7;
 }
 
+/* Linha que ainda não tem destino (currículo): apagada e sem hover */
+.code-line--soon {
+  opacity: 0.6;
+}
+
 /* Ícone do app no começo da linha */
 .code-line__icon {
   display: inline-grid;
@@ -1600,12 +1605,12 @@
 }
 
 @media (hover: hover) {
-  .code-line:not(.code-line--static):hover {
+  .code-line:not(.code-line--static, .code-line--soon):hover {
     background: color-mix(in srgb, var(--accent) 8%, transparent);
     box-shadow: inset 2px 0 0 var(--accent);
   }
 
-  .code-line:not(.code-line--static):hover::before {
+  .code-line:not(.code-line--static, .code-line--soon):hover::before {
     color: var(--accent);
     opacity: 1;
   }
