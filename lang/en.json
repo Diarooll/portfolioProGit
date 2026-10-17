@@ -55,8 +55,8 @@
     "demo": "Live demo",
     "p1": {
       "title": "Sito's Estacionamento",
-      "desc": "A web system for a parking lot, built with HTML, CSS and JavaScript, with several features for the day-to-day of the business.",
-      "learned": "Bringing HTML, CSS and JavaScript together in a system with several features and organizing the logic of a real-world case."
+      "desc": "A marketing landing page I built as a freelancer for a parking business with two locations in Méier, Rio de Janeiro. It shows each location's prices, maps with a 360° tour and an \"Open now\" status calculated in São Paulo's time zone.",
+      "learned": "Local SEO with JSON-LD, isolated JS modules with import(), a lite mode that turns off heavy effects on slow machines, and cache busting with versioned URLs."
     },
     "p2": {
       "title": "JavaNelio",

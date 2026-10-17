@@ -55,8 +55,8 @@
     "demo": "Ver online",
     "p1": {
       "title": "Sito's Estacionamento",
-      "desc": "Sistema web para um estacionamento, feito com HTML, CSS e JavaScript, com várias funções para o dia a dia do negócio.",
-      "learned": "Juntar HTML, CSS e JavaScript num sistema com várias funções e organizar a lógica de um caso real."
+      "desc": "Landing page de marketing que fiz como freelancer para um estacionamento com duas unidades no Méier (RJ). Mostra os preços de cada unidade, mapas com tour 360° e um aviso de \"Aberto agora\" calculado no fuso de São Paulo.",
+      "learned": "SEO local com JSON-LD, módulos JS isolados com import(), um modo leve que desliga efeitos pesados em máquinas fracas e cache-busting com versão na URL."
     },
     "p2": {
       "title": "JavaNelio",
