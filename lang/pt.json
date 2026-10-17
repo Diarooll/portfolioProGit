@@ -40,7 +40,7 @@
     "photoAlt": "Diego sorrindo na plateia do Talent Summit da FIAP",
     "caption": "Talent Summit · FIAP",
     "p1": "Estudo Engenharia de Software e gosto mais do back-end, a parte que fica por trás da tela: APIs, regras de negócio e dados.",
-    "p2": "Ainda não tenho experiência profissional. Estou firmando a base em Java e estudando Spring Boot e SQL. Aprendo melhor construindo projetos, e o código deles está aqui."
+    "p2": "Hoje trabalho como freelancer fazendo landing pages e, em breve, vou partir para sistemas mais complexos. Ao mesmo tempo, firmo a base em Java e estudo Spring Boot e SQL. Aprendo melhor construindo projetos, e o código deles está aqui."
   },
   "stack": {
     "focus": "Foco",
@@ -54,9 +54,9 @@
     "code": "Código",
     "demo": "Ver online",
     "p1": {
-      "title": "personalProject",
-      "desc": "Meu primeiro portfólio. Fiz para treinar front-end, com a estrutura em HTML e o estilo em CSS.",
-      "learned": "Montar o layout de uma página do zero, organizar o CSS e publicar um site no GitHub Pages."
+      "title": "Sito's Estacionamento",
+      "desc": "Sistema web para um estacionamento, feito com HTML, CSS e JavaScript, com várias funções para o dia a dia do negócio.",
+      "learned": "Juntar HTML, CSS e JavaScript num sistema com várias funções e organizar a lógica de um caso real."
     },
     "p2": {
       "title": "JavaNelio",
@@ -92,6 +92,11 @@
       "title": "Estrutura de Dados e Algoritmos",
       "desc": "Faço cursos de estrutura de dados e algoritmos para ter uma base mais sólida e escrever código mais eficiente."
     },
+    "i4": {
+      "date": "freelance · agora",
+      "title": "Landing pages como freelancer",
+      "desc": "Faço landing pages para clientes como freelancer e, em breve, vou partir para sistemas mais complexos."
+    },
     "next": {
       "date": "próximo passo",
       "title": "Estágio ou vaga júnior em back-end",
@@ -103,8 +108,7 @@
     "copy": "copiar",
     "copied": "Email copiado",
     "copyFail": "Não deu para copiar. Selecione o email e copie manualmente.",
-    "cv": "baixar",
-    "cvLabel": "Baixar currículo"
+    "cvSoon": "currículo ainda não disponível"
   },
   "footer": {
     "text": "Feito com HTML, CSS e JavaScript, com ajuda de inteligência artificial"
