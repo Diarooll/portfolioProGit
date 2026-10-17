@@ -50,6 +50,7 @@
   "projects": {
     "intro": "Projects I made while studying, with what I learned from each one.",
     "learned": "What I learned",
+    "highlights": "Technical highlights",
     "tagsLabel": "Technologies",
     "code": "Code",
     "demo": "Live demo",
