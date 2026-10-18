@@ -37,8 +37,7 @@
     "ctaContact": "Get in touch"
   },
   "about": {
-    "photoAlt": "Diego smiling in the audience at the FIAP Talent Summit",
-    "caption": "Talent Summit · FIAP",
+    "photoAlt": "Diego wearing glasses and a black T-shirt, resting his head on his hand",
     "p1": "I study Software Engineering and the back-end is the part I like most, the side behind the screen: APIs, business rules and data.",
     "p2": "I currently work as a freelancer building landing pages, and soon I'll move on to more complex systems. At the same time, I'm building a solid base in Java and studying Spring Boot and SQL. I learn best by building projects, and their code is here."
   },
